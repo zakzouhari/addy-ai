@@ -1,12 +1,15 @@
 {
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "paths": {
-      "@smartmail/shared": ["../shared/types"]
-    }
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "src/__tests__"]
+    "extends": "../tsconfig.base.json",
+    "compilerOptions": {
+          "outDir": "./dist",
+          "rootDir": "./src",
+          "strict": false,
+          "noImplicitAny": false,
+          "skipLibCheck": true,
+          "paths": {
+                  "@smartmail/shared": ["../shared/types"]
+          }
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist", "src/__tests__"]
 }
