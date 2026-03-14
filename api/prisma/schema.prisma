@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Plan {
+  FREE
+  PRO
+  ENTERPRISE
+}
+
+enum DocSourceType {
+  PDF
+  URL
+  TEXT
+}
+
+enum DocStatus {
+  PROCESSING
+  READY
+  ERROR
+}
+
+enum AuthMethod {
+  GOOGLE
+  EMAIL
+}
+
+enum ReminderStatus {
+  PENDING
+  TRIGGERED
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id                   String              @id @default(uuid())
+  email                String              @unique
+  name                 String
+  googleId             String?             @unique
+  passwordHash         String?
+  authMethod           AuthMethod          @default(GOOGLE)
+  avatarUrl            String?
+  plan                 Plan                @default(FREE)
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  settings             Json                @default("{}")
+  styleProfile         Json?
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+  knowledgeDocs        KnowledgeDocument[]
+  reminders            FollowUpReminder[]
+  analytics            UserAnalytics?
+  refreshTokens        RefreshToken[]
+
+  @@index([email])
+  @@index([googleId])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@index([userId])
+}
+
+model KnowledgeDocument {
+  id         String        @id @default(uuid())
+  userId     String
+  title      String
+  sourceType DocSourceType
+  sourceUrl  String?
+  content    String
+  status     DocStatus     @default(PROCESSING)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chunks     KnowledgeChunk[]
+
+  @@index([userId])
+  @@index([status])
+}
+
+model KnowledgeChunk {
+  id         String            @id @default(uuid())
+  documentId String
+  content    String
+  embedding  Unsupported("vector(1024)")?
+  metadata   Json              @default("{}")
+  createdAt  DateTime          @default(now())
+  document   KnowledgeDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([documentId])
+}
+
+model FollowUpReminder {
+  id             String         @id @default(uuid())
+  userId         String
+  emailId        String
+  threadId       String
+  subject        String
+  recipientEmail String
+  scheduledAt    DateTime
+  status         ReminderStatus @default(PENDING)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status, scheduledAt])
+}
+
+model UserAnalytics {
+  id               String   @id @default(uuid())
+  userId           String   @unique
+  emailsComposed   Int      @default(0)
+  emailsSummarized Int      @default(0)
+  toneAdjustments  Int      @default(0)
+  timeSavedMinutes Float    @default(0)
+  dailyUsage       Json     @default("[]")
+  mostUsedTones    Json     @default("[]")
+  updatedAt        DateTime @updatedAt
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}

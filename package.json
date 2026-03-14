@@ -1,0 +1,29 @@
+{
+  "name": "smartmail-ai",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "shared",
+    "api",
+    "dashboard",
+    "extension"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "build:shared": "npm run build -w shared",
+    "build:api": "npm run build -w api",
+    "build:dashboard": "npm run build -w dashboard",
+    "build:extension": "npm run build -w extension",
+    "dev:api": "npm run dev -w api",
+    "dev:dashboard": "npm run dev -w dashboard",
+    "dev:extension": "npm run dev -w extension",
+    "test": "npm run test --workspaces --if-present",
+    "test:api": "npm run test -w api",
+    "lint": "npm run lint --workspaces --if-present",
+    "clean": "rimraf node_modules */node_modules */dist */.next"
+  },
+  "devDependencies": {
+    "rimraf": "^5.0.0",
+    "typescript": "^5.3.0"
+  }
+}

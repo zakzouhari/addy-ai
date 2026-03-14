@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.next/
+build/
+.env
+.env.local
+.env.*.local
+*.log
+npm-debug.log*
+coverage/
+.DS_Store
+*.tsbuildinfo
+.vscode/*
+!.vscode/settings.json
+dump.rdb
+*.pem
+extension/build/
