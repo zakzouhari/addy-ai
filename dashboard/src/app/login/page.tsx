@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { api } from '@/lib/api';
 
-export default function LoginPage() {
+function LoginForm() {
   const { user, loading, login } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -142,5 +142,17 @@ export default function LoginPage() {
         <p className="mt-4 text-xs text-gray-400 text-center">By signing in, you agree to our Terms of Service and Privacy Policy</p>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="w-8 h-8 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+      </div>
+    }>
+      <LoginForm />
+    </Suspense>
   );
 }
