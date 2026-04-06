@@ -1,0 +1,26 @@
+name = "addy-ai"
+compatibility_date = "2024-09-02"
+pages_build_output_dir = "public"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "addy-ai-db"
+database_id = "YOUR_D1_DATABASE_ID"
+
+[[r2_buckets]]
+binding = "DOCUMENTS"
+bucket_name = "addy-ai-documents"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "YOUR_KV_NAMESPACE_ID"
+
+[vars]
+FROM_EMAIL = "zzouhari@rmchomemortgage.com"
+SENDER_NAME = "Zak Zouhari - RMC Home Mortgage"
+APP_URL = "https://addy-ai.pages.dev"
+
+# Secrets (set via Cloudflare dashboard or: wrangler secret put SECRET_NAME):
+# JWT_SECRET         — random 64-char string for signing session tokens
+# ANTHROPIC_API_KEY  — sk-ant-api03-...
+# SMTP2GO_API_KEY    — api-02F218C3D94E47528E825E8A42D4D526

@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Addy AI — RMC Home Mortgage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ─── Reset & Variables ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --primary:        #3B82C4;
+  --primary-dark:   #1E4976;
+  --primary-light:  #EBF4FF;
+  --primary-hover:  #2d6fad;
+  --white:          #FFFFFF;
+  --gray-50:        #F8FAFC;
+  --gray-100:       #F1F5F9;
+  --gray-200:       #E2E8F0;
+  --gray-300:       #CBD5E1;
+  --gray-400:       #94A3B8;
+  --gray-500:       #64748B;
+  --gray-600:       #475569;
+  --gray-700:       #334155;
+  --gray-800:       #1E293B;
+  --success:        #16A34A;
+  --success-bg:     #DCFCE7;
+  --warning:        #D97706;
+  --warning-bg:     #FEF3C7;
+  --danger:         #DC2626;
+  --danger-bg:      #FEE2E2;
+  --info:           #0284C7;
+  --info-bg:        #E0F2FE;
+  --purple:         #7C3AED;
+  --purple-bg:      #EDE9FE;
+  --orange:         #EA580C;
+  --orange-bg:      #FFEDD5;
+  --teal:           #0F766E;
+  --teal-bg:        #CCFBF1;
+  --sidebar-w:      240px;
+  --header-h:       60px;
+  --radius:         8px;
+  --shadow-sm:      0 1px 3px rgba(0,0,0,.08);
+  --shadow:         0 4px 12px rgba(0,0,0,.10);
+  --shadow-lg:      0 8px 32px rgba(0,0,0,.14);
+  --transition:     .18s ease;
+}
+html, body { height: 100%; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--gray-800); background: var(--gray-50); }
+
+/* ─── Utilities ─────────────────────────────────────────────────── */
+.hidden { display: none !important; }
+.flex    { display: flex; }
+.items-center { align-items: center; }
+.gap-2  { gap: 8px; }
+.gap-3  { gap: 12px; }
+.ml-auto { margin-left: auto; }
+.text-sm { font-size: 12px; }
+.text-muted { color: var(--gray-500); }
+.font-semibold { font-weight: 600; }
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ─── Buttons ───────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: var(--radius); font-size: 14px;
+  font-weight: 500; cursor: pointer; border: none; transition: var(--transition);
+  white-space: nowrap; text-decoration: none;
+}
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.btn-primary   { background: var(--primary); color: #fff; }
+.btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+.btn-secondary { background: var(--white); color: var(--gray-700); border: 1px solid var(--gray-300); }
+.btn-secondary:hover:not(:disabled) { background: var(--gray-100); }
+.btn-danger    { background: var(--danger); color: #fff; }
+.btn-danger:hover:not(:disabled) { background: #b91c1c; }
+.btn-ghost     { background: transparent; color: var(--gray-600); padding: 6px 10px; }
+.btn-ghost:hover { background: var(--gray-100); }
+.btn-sm { padding: 5px 10px; font-size: 12px; }
+.btn-icon { padding: 6px; border-radius: 6px; }
+
+/* ─── Badges / Status ───────────────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center; padding: 2px 8px;
+  border-radius: 999px; font-size: 11px; font-weight: 600; letter-spacing: .02em;
+}
+.badge-gray    { background: var(--gray-100); color: var(--gray-600); }
+.badge-blue    { background: var(--primary-light); color: var(--primary-dark); }
+.badge-yellow  { background: var(--warning-bg); color: var(--warning); }
+.badge-green   { background: var(--success-bg); color: var(--success); }
+.badge-red     { background: var(--danger-bg); color: var(--danger); }
+.badge-purple  { background: var(--purple-bg); color: var(--purple); }
+.badge-orange  { background: var(--orange-bg); color: var(--orange); }
+.badge-teal    { background: var(--teal-bg); color: var(--teal); }
+.badge-admin     { background: var(--primary-dark); color: #fff; }
+.badge-processor { background: var(--primary-light); color: var(--primary-dark); }
+.badge-assistant { background: var(--gray-100); color: var(--gray-600); }
+
+/* ─── Forms ─────────────────────────────────────────────────────── */
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-size: 13px; font-weight: 500; color: var(--gray-700); margin-bottom: 6px; }
+.form-control {
+  width: 100%; padding: 9px 12px; border: 1px solid var(--gray-300);
+  border-radius: var(--radius); font-size: 14px; color: var(--gray-800);
+  background: var(--white); transition: var(--transition); outline: none;
+}
+.form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59,130,196,.15); }
+.form-control::placeholder { color: var(--gray-400); }
+select.form-control { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394A3B8' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 32px; }
+textarea.form-control { resize: vertical; min-height: 80px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* ─── Cards ─────────────────────────────────────────────────────── */
+.card { background: var(--white); border: 1px solid var(--gray-200); border-radius: 10px; box-shadow: var(--shadow-sm); }
+.card-header { padding: 16px 20px; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; gap: 10px; }
+.card-title { font-size: 15px; font-weight: 600; color: var(--gray-800); }
+.card-body  { padding: 20px; }
+
+/* ─── Tables ────────────────────────────────────────────────────── */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: .05em; background: var(--gray-50); border-bottom: 1px solid var(--gray-200); white-space: nowrap; }
+td { padding: 12px 14px; border-bottom: 1px solid var(--gray-100); color: var(--gray-700); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--gray-50); }
+.table-actions { display: flex; gap: 4px; }
+
+/* ─── Login Page ────────────────────────────────────────────────── */
+#app-login {
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+  padding: 20px;
+}
+.login-card {
+  background: var(--white); border-radius: 16px; padding: 48px 40px;
+  width: 100%; max-width: 420px; box-shadow: var(--shadow-lg);
+}
+.login-logo { text-align: center; margin-bottom: 32px; }
+.login-logo-mark {
+  width: 64px; height: 64px; background: var(--primary-dark);
+  border-radius: 16px; display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px; font-size: 28px; font-weight: 700; color: #fff;
+}
+.login-logo h1 { font-size: 26px; font-weight: 700; color: var(--primary-dark); }
+.login-logo p  { font-size: 13px; color: var(--gray-500); margin-top: 4px; }
+.login-footer  { text-align: center; margin-top: 24px; font-size: 12px; color: var(--gray-400); }
+
+/* ─── App Shell ─────────────────────────────────────────────────── */
+#app-main { display: flex; height: 100vh; overflow: hidden; }
+
+/* ─── Sidebar ───────────────────────────────────────────────────── */
+#sidebar {
+  width: var(--sidebar-w); flex-shrink: 0;
+  background: var(--primary-dark); color: #fff;
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+}
+.sidebar-brand {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+}
+.brand-logo {
+  display: flex; align-items: center; gap: 10px; text-decoration: none;
+}
+.brand-mark {
+  width: 36px; height: 36px; background: rgba(255,255,255,.18);
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.brand-text h2 { font-size: 16px; font-weight: 700; color: #fff; }
+.brand-text p  { font-size: 10px; color: rgba(255,255,255,.55); margin-top: 1px; line-height: 1.3; }
+
+.sidebar-nav { flex: 1; padding: 12px 8px; }
+.nav-section { margin-bottom: 4px; }
+.nav-label { font-size: 10px; font-weight: 600; color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: .08em; padding: 8px 12px 4px; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 8px; cursor: pointer;
+  color: rgba(255,255,255,.75); font-size: 14px; font-weight: 500;
+  transition: var(--transition); text-decoration: none; border: none;
+  background: none; width: 100%; text-align: left;
+}
+.nav-item:hover  { background: rgba(255,255,255,.1); color: #fff; }
+.nav-item.active { background: rgba(255,255,255,.18); color: #fff; }
+.nav-item svg    { flex-shrink: 0; opacity: .8; }
+.nav-item.active svg { opacity: 1; }
+
+.sidebar-footer {
+  padding: 12px 16px; border-top: 1px solid rgba(255,255,255,.12);
+}
+.sidebar-user { display: flex; align-items: center; gap: 10px; }
+.user-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(255,255,255,.2); display: flex; align-items: center;
+  justify-content: center; font-size: 13px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+}
+.user-info p { font-size: 13px; font-weight: 600; color: #fff; }
+.user-info span { font-size: 11px; color: rgba(255,255,255,.55); }
+.btn-logout {
+  background: rgba(255,255,255,.1); border: none; color: rgba(255,255,255,.7);
+  padding: 4px 8px; border-radius: 6px; font-size: 11px; cursor: pointer;
+  transition: var(--transition); margin-top: 4px;
+}
+.btn-logout:hover { background: rgba(255,255,255,.2); color: #fff; }
+
+/* ─── Main Content ──────────────────────────────────────────────── */
+#main-content {
+  flex: 1; overflow-y: auto; display: flex; flex-direction: column;
+  background: var(--gray-50);
+}
+.page-header {
+  background: var(--white); border-bottom: 1px solid var(--gray-200);
+  padding: 0 28px; height: var(--header-h);
+  display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+  position: sticky; top: 0; z-index: 10;
+}
+.page-header h1 { font-size: 18px; font-weight: 600; color: var(--gray-800); }
+.page-content { padding: 24px 28px; flex: 1; }
+
+/* ─── Stats Grid ────────────────────────────────────────────────── */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.stat-card {
+  background: var(--white); border: 1px solid var(--gray-200);
+  border-radius: 10px; padding: 20px; box-shadow: var(--shadow-sm);
+}
+.stat-card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+.stat-icon { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+.stat-value { font-size: 28px; font-weight: 700; color: var(--gray-800); line-height: 1; }
+.stat-label { font-size: 13px; color: var(--gray-500); margin-top: 4px; }
+.stat-change { font-size: 11px; font-weight: 500; margin-top: 8px; display: flex; align-items: center; gap: 4px; }
+.stat-change.up   { color: var(--success); }
+.stat-change.down { color: var(--danger); }
+
+/* ─── Search bar ────────────────────────────────────────────────── */
+.search-bar {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--white); border: 1px solid var(--gray-300);
+  border-radius: var(--radius); padding: 8px 14px;
+  flex: 1; max-width: 360px;
+}
+.search-bar input { border: none; outline: none; font-size: 14px; color: var(--gray-800); background: none; width: 100%; }
+.search-bar input::placeholder { color: var(--gray-400); }
+
+/* ─── Filters row ───────────────────────────────────────────────── */
+.filters-row {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 16px; flex-wrap: wrap;
+}
+.filter-select {
+  padding: 7px 12px; border: 1px solid var(--gray-300); border-radius: var(--radius);
+  font-size: 13px; color: var(--gray-700); background: var(--white); cursor: pointer; outline: none;
+}
+.filter-select:focus { border-color: var(--primary); }
+
+/* ─── Loan Detail Layout ────────────────────────────────────────── */
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.detail-full  { margin-bottom: 16px; }
+.info-row { display: flex; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--gray-100); }
+.info-row:last-child { border-bottom: none; }
+.info-label { width: 160px; font-size: 12px; font-weight: 500; color: var(--gray-500); flex-shrink: 0; }
+.info-value { font-size: 14px; color: var(--gray-800); flex: 1; }
+
+/* ─── Missing Items ─────────────────────────────────────────────── */
+.checklist { list-style: none; }
+.checklist-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0; border-bottom: 1px solid var(--gray-100);
+}
+.checklist-item:last-child { border-bottom: none; }
+.item-status-btn {
+  width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--gray-300);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  flex-shrink: 0; transition: var(--transition); background: #fff;
+}
+.item-status-btn.received { background: var(--success); border-color: var(--success); }
+.item-status-btn.waived   { background: var(--gray-400); border-color: var(--gray-400); }
+.item-text { flex: 1; font-size: 13px; color: var(--gray-700); }
+.item-text.done { text-decoration: line-through; color: var(--gray-400); }
+.item-source { font-size: 10px; color: var(--gray-400); background: var(--gray-100); padding: 1px 6px; border-radius: 999px; }
+
+/* ─── Document List ─────────────────────────────────────────────── */
+.doc-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px; border: 1px solid var(--gray-200); border-radius: 8px; margin-bottom: 8px;
+  background: var(--white); transition: var(--transition);
+}
+.doc-item:hover { border-color: var(--primary); box-shadow: var(--shadow-sm); }
+.doc-icon {
+  width: 36px; height: 36px; border-radius: 8px; display: flex;
+  align-items: center; justify-content: center; flex-shrink: 0;
+}
+.doc-name  { font-size: 13px; font-weight: 500; color: var(--gray-800); }
+.doc-meta  { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+.doc-actions { display: flex; gap: 4px; margin-left: auto; }
+
+/* ─── Upload Drop Zone ──────────────────────────────────────────── */
+.upload-zone {
+  border: 2px dashed var(--gray-300); border-radius: 10px;
+  padding: 28px; text-align: center; cursor: pointer; transition: var(--transition);
+  background: var(--gray-50);
+}
+.upload-zone:hover, .upload-zone.drag-over { border-color: var(--primary); background: var(--primary-light); }
+.upload-zone input[type=file] { display: none; }
+
+/* ─── Email List ────────────────────────────────────────────────── */
+.email-item { padding: 12px 0; border-bottom: 1px solid var(--gray-100); }
+.email-item:last-child { border-bottom: none; }
+.email-subject { font-size: 13px; font-weight: 500; color: var(--gray-800); margin-bottom: 2px; }
+.email-meta    { font-size: 11px; color: var(--gray-500); }
+
+/* ─── Modals ────────────────────────────────────────────────────── */
+#modal-overlay {
+  position: fixed; inset: 0; background: rgba(15,23,42,.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000; padding: 20px; backdrop-filter: blur(2px);
+}
+.modal {
+  background: var(--white); border-radius: 14px; width: 100%; max-width: 540px;
+  box-shadow: var(--shadow-lg); overflow: hidden; max-height: 90vh;
+  display: flex; flex-direction: column;
+}
+.modal-lg  { max-width: 720px; }
+.modal-header {
+  padding: 20px 24px 16px; border-bottom: 1px solid var(--gray-200);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-title { font-size: 17px; font-weight: 600; color: var(--gray-800); }
+.modal-close { background: none; border: none; cursor: pointer; color: var(--gray-400); padding: 4px; border-radius: 6px; transition: var(--transition); }
+.modal-close:hover { background: var(--gray-100); color: var(--gray-600); }
+.modal-body   { padding: 24px; overflow-y: auto; }
+.modal-footer { padding: 16px 24px; border-top: 1px solid var(--gray-200); display: flex; justify-content: flex-end; gap: 10px; }
+
+/* ─── Toast Notifications ───────────────────────────────────────── */
+#toast-container {
+  position: fixed; bottom: 24px; right: 24px;
+  display: flex; flex-direction: column; gap: 8px; z-index: 2000;
+}
+.toast {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px; border-radius: 10px; max-width: 360px;
+  box-shadow: var(--shadow); font-size: 13px; font-weight: 500;
+  animation: toastIn .25s ease; pointer-events: auto;
+}
+.toast.success { background: var(--success); color: #fff; }
+.toast.error   { background: var(--danger);  color: #fff; }
+.toast.info    { background: var(--primary);  color: #fff; }
+.toast.warning { background: var(--warning);  color: #fff; }
+@keyframes toastIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+/* ─── Loading Spinner ───────────────────────────────────────────── */
+.spinner {
+  width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.3);
+  border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; display: inline-block;
+}
+.spinner-dark {
+  width: 32px; height: 32px; border: 3px solid var(--gray-200);
+  border-top-color: var(--primary); border-radius: 50%; animation: spin .7s linear infinite;
+  margin: 40px auto; display: block;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── Analysis Result ───────────────────────────────────────────── */
+.analysis-section { margin-bottom: 16px; }
+.analysis-section h4 { font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--gray-500); letter-spacing: .05em; margin-bottom: 8px; }
+.analysis-kv { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; }
+.analysis-key { font-size: 12px; font-weight: 500; color: var(--gray-500); }
+.analysis-val { font-size: 13px; color: var(--gray-800); }
+.flag-item { font-size: 12px; color: var(--warning); background: var(--warning-bg); padding: 4px 8px; border-radius: 6px; margin-bottom: 4px; }
+
+/* ─── Empty States ──────────────────────────────────────────────── */
+.empty-state { text-align: center; padding: 48px 20px; color: var(--gray-500); }
+.empty-state svg { margin-bottom: 12px; opacity: .4; }
+.empty-state h3  { font-size: 16px; font-weight: 600; color: var(--gray-600); margin-bottom: 6px; }
+.empty-state p   { font-size: 13px; }
+
+/* ─── Tabs ──────────────────────────────────────────────────────── */
+.tabs { display: flex; border-bottom: 2px solid var(--gray-200); margin-bottom: 16px; }
+.tab-btn {
+  padding: 10px 16px; font-size: 13px; font-weight: 500; color: var(--gray-500);
+  border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent;
+  margin-bottom: -2px; transition: var(--transition);
+}
+.tab-btn:hover { color: var(--primary); }
+.tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* ─── Responsive ────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .detail-grid { grid-template-columns: 1fr; }
+  .form-row    { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  :root { --sidebar-w: 0px; }
+  #sidebar { display: none; }
+  .page-content { padding: 16px; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     LOGIN PAGE
+═══════════════════════════════════════════════════════════════ -->
+<div id="app-login">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-mark">A</div>
+      <h1>Addy AI</h1>
+      <p>RMC Home Mortgage — Loan Processing Platform</p>
+    </div>
+    <form id="login-form">
+      <div class="form-group">
+        <label class="form-label" for="login-email">Email Address</label>
+        <input class="form-control" type="email" id="login-email" placeholder="you@rmchomemortgage.com" required autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="login-password">Password</label>
+        <input class="form-control" type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+      </div>
+      <div id="login-error" class="hidden" style="background:var(--danger-bg);color:var(--danger);padding:10px 12px;border-radius:8px;font-size:13px;margin-bottom:14px;"></div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;" id="login-btn">
+        Sign In
+      </button>
+    </form>
+    <div class="login-footer">
+      Secured by Cloudflare &bull; &copy; 2025 RMC Home Mortgage
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     APP SHELL (shown after login)
+═══════════════════════════════════════════════════════════════ -->
+<div id="app-main" class="hidden">
+
+  <!-- Sidebar -->
+  <aside id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">
+        <div class="brand-mark">A</div>
+        <div class="brand-text">
+          <h2>Addy AI</h2>
+          <p>RMC Home Mortgage</p>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-label">Main</div>
+        <button class="nav-item active" data-page="dashboard">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </button>
+        <button class="nav-item" data-page="loans">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Loan Pipeline
+        </button>
+      </div>
+      <div class="nav-section admin-only">
+        <div class="nav-label">Admin</div>
+        <button class="nav-item admin-only" data-page="admin">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          User Management
+        </button>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="user-avatar" id="sidebar-avatar">Z</div>
+        <div class="user-info" style="flex:1;min-width:0;">
+          <p class="truncate" id="sidebar-name">Zak Zouhari</p>
+          <span id="sidebar-role">Admin</span>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="App.auth.logout()">Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main id="main-content">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1 id="page-title">Dashboard</h1>
+      <div class="flex gap-2 ml-auto" id="header-actions"></div>
+    </div>
+
+    <!-- ── DASHBOARD PAGE ────────────────────────────────────── -->
+    <div id="page-dashboard" class="page page-content">
+      <div class="stats-grid" id="stats-grid">
+        <!-- populated by JS -->
+      </div>
+      <div class="card">
+        <div class="card-header" style="justify-content:space-between;">
+          <span class="card-title">Recent Loans</span>
+          <button class="btn btn-sm btn-primary" onclick="App.navigate('loans')">View All</button>
+        </div>
+        <div class="table-wrap" id="dashboard-recent-loans">
+          <div class="spinner-dark"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LOANS PAGE ────────────────────────────────────────── -->
+    <div id="page-loans" class="page page-content hidden">
+      <div class="filters-row">
+        <div class="search-bar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="loan-search" placeholder="Search by borrower, address…" oninput="App.pages.loans.search(this.value)">
+        </div>
+        <select class="filter-select" id="loan-status-filter" onchange="App.pages.loans.filter()">
+          <option value="">All Statuses</option>
+          <option value="application">Application</option>
+          <option value="docs_pending">Docs Pending</option>
+          <option value="processing">Processing</option>
+          <option value="underwriting">Underwriting</option>
+          <option value="conditional">Conditional Approval</option>
+          <option value="clear_to_close">Clear to Close</option>
+          <option value="closed">Closed</option>
+          <option value="denied">Denied</option>
+          <option value="withdrawn">Withdrawn</option>
+        </select>
+        <button class="btn btn-primary btn-sm" onclick="App.ui.showModal('modal-new-loan')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          New Loan
+        </button>
+      </div>
+      <div class="card">
+        <div class="table-wrap" id="loans-table-wrap">
+          <div class="spinner-dark"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LOAN DETAIL PAGE ──────────────────────────────────── -->
+    <div id="page-loan-detail" class="page page-content hidden">
+      <div id="loan-detail-content">
+        <div class="spinner-dark"></div>
+      </div>
+    </div>
+
+    <!-- ── ADMIN PAGE ────────────────────────────────────────── -->
+    <div id="page-admin" class="page page-content hidden">
+      <div class="filters-row" style="justify-content:flex-end;">
+        <button class="btn btn-primary btn-sm" onclick="App.ui.showModal('modal-new-user')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          New User
+        </button>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">Team Members</span></div>
+        <div class="table-wrap" id="users-table-wrap">
+          <div class="spinner-dark"></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MODALS
+═══════════════════════════════════════════════════════════════ -->
+<div id="modal-overlay" class="hidden" onclick="App.ui.overlayClick(event)">
+
+  <!-- New Loan Modal -->
+  <div class="modal modal-lg" id="modal-new-loan" style="display:none;">
+    <div class="modal-header">
+      <span class="modal-title">New Loan File</span>
+      <button class="modal-close" onclick="App.ui.hideModal('modal-new-loan')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form id="form-new-loan">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Borrower Name *</label>
+            <input class="form-control" name="borrower_name" required placeholder="John Smith">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Co-Borrower Name</label>
+            <input class="form-control" name="co_borrower_name" placeholder="Jane Smith">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Borrower Email</label>
+            <input class="form-control" type="email" name="borrower_email" placeholder="john@example.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Borrower Phone</label>
+            <input class="form-control" name="borrower_phone" placeholder="(555) 000-0000">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Loan Amount</label>
+            <input class="form-control" type="number" name="loan_amount" placeholder="450000" min="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Loan Type</label>
+            <select class="form-control" name="loan_type">
+              <option value="">Select type…</option>
+              <option>Conventional</option><option>FHA</option><option>VA</option>
+              <option>USDA</option><option>Jumbo</option><option>Refinance</option>
+              <option>HELOC</option><option>Bridge</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Loan Purpose</label>
+            <select class="form-control" name="loan_purpose">
+              <option value="">Select…</option>
+              <option>Purchase</option><option>Refinance</option><option>Cash-Out</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Status</label>
+            <select class="form-control" name="status">
+              <option value="application">Application Received</option>
+              <option value="docs_pending">Docs Pending</option>
+              <option value="processing">Processing</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Property Address</label>
+          <input class="form-control" name="property_address" placeholder="123 Main St, Anytown, CA 90210">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Property Type</label>
+            <select class="form-control" name="property_type">
+              <option value="">Select…</option>
+              <option>SFR</option><option>Condo</option><option>Multi-Family</option>
+              <option>Commercial</option><option>Land</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Assign To</label>
+            <select class="form-control" name="assigned_to" id="select-assigned-to">
+              <option value="">Me</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Notes</label>
+          <textarea class="form-control" name="notes" placeholder="Any additional notes…"></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="App.ui.hideModal('modal-new-loan')">Cancel</button>
+      <button class="btn btn-primary" id="btn-save-loan" onclick="App.pages.loans.create()">Create Loan File</button>
+    </div>
+  </div>
+
+  <!-- New User Modal -->
+  <div class="modal" id="modal-new-user" style="display:none;">
+    <div class="modal-header">
+      <span class="modal-title" id="user-modal-title">New User</span>
+      <button class="modal-close" onclick="App.ui.hideModal('modal-new-user')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form id="form-new-user">
+        <input type="hidden" name="user_id">
+        <div class="form-group">
+          <label class="form-label">Full Name *</label>
+          <input class="form-control" name="name" required placeholder="Jennifer Rosario">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address *</label>
+          <input class="form-control" type="email" name="email" required placeholder="jrosario@rmchomemortgage.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Role *</label>
+          <select class="form-control" name="role" required>
+            <option value="processor">Processor</option>
+            <option value="assistant">Assistant</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <div class="form-group" id="password-field">
+          <label class="form-label">Password *</label>
+          <input class="form-control" type="password" name="password" placeholder="Minimum 8 characters">
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="App.ui.hideModal('modal-new-user')">Cancel</button>
+      <button class="btn btn-primary" id="btn-save-user" onclick="App.pages.admin.saveUser()">Create User</button>
+    </div>
+  </div>
+
+  <!-- Send Email Modal -->
+  <div class="modal modal-lg" id="modal-send-email" style="display:none;">
+    <div class="modal-header">
+      <span class="modal-title">Send Email</span>
+      <button class="modal-close" onclick="App.ui.hideModal('modal-send-email')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Template</label>
+        <select class="form-control" id="email-template" onchange="App.pages.loanDetail.loadEmailTemplate()">
+          <option value="custom">Custom Email</option>
+          <option value="missing_items">Missing Documents Request</option>
+          <option value="status_update">Status Update</option>
+          <option value="welcome">Welcome / Next Steps</option>
+          <option value="clear_to_close">Clear to Close Notice</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">To *</label>
+        <input class="form-control" id="email-to" type="email" placeholder="borrower@example.com" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">To Name</label>
+        <input class="form-control" id="email-to-name" placeholder="John Smith">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Subject *</label>
+        <input class="form-control" id="email-subject" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message *</label>
+        <textarea class="form-control" id="email-body" style="min-height:200px;" required></textarea>
+      </div>
+      <p style="font-size:11px;color:var(--gray-400);">Sent from: Zak Zouhari - RMC Home Mortgage &lt;zzouhari@rmchomemortgage.com&gt;</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="App.ui.hideModal('modal-send-email')">Cancel</button>
+      <button class="btn btn-primary" id="btn-send-email" onclick="App.pages.loanDetail.sendEmail()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Send Email
+      </button>
+    </div>
+  </div>
+
+  <!-- Add Missing Item Modal -->
+  <div class="modal" id="modal-add-item" style="display:none;">
+    <div class="modal-header">
+      <span class="modal-title">Add Missing Item</span>
+      <button class="modal-close" onclick="App.ui.hideModal('modal-add-item')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Item Description *</label>
+        <input class="form-control" id="new-item-text" placeholder="e.g. Last 2 years W-2 forms" required>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="App.ui.hideModal('modal-add-item')">Cancel</button>
+      <button class="btn btn-primary" onclick="App.pages.loanDetail.addMissingItem()">Add Item</button>
+    </div>
+  </div>
+
+  <!-- Document Analysis Result Modal -->
+  <div class="modal modal-lg" id="modal-analysis" style="display:none;">
+    <div class="modal-header">
+      <span class="modal-title">AI Analysis Result</span>
+      <button class="modal-close" onclick="App.ui.hideModal('modal-analysis')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="modal-analysis-body">
+      <div class="spinner-dark"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="App.ui.hideModal('modal-analysis')">Close</button>
+    </div>
+  </div>
+
+  <!-- Edit Loan Status Modal -->
+  <div class="modal" id="modal-edit-loan" style="display:none;">
+    <div class="modal-header">
+      <span class="modal-title">Update Loan</span>
+      <button class="modal-close" onclick="App.ui.hideModal('modal-edit-loan')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <select class="form-control" id="edit-loan-status">
+          <option value="application">Application Received</option>
+          <option value="docs_pending">Docs Pending</option>
+          <option value="processing">Processing</option>
+          <option value="underwriting">In Underwriting</option>
+          <option value="conditional">Conditional Approval</option>
+          <option value="clear_to_close">Clear to Close</option>
+          <option value="closed">Closed</option>
+          <option value="denied">Denied</option>
+          <option value="withdrawn">Withdrawn</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Internal Notes</label>
+        <textarea class="form-control" id="edit-loan-notes" rows="4"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="App.ui.hideModal('modal-edit-loan')">Cancel</button>
+      <button class="btn btn-primary" onclick="App.pages.loanDetail.saveUpdate()">Save Changes</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     APPLICATION JAVASCRIPT
+═══════════════════════════════════════════════════════════════ -->
+<script>
+const App = {
+  state: {
+    user: null,
+    loans: [],
+    currentLoan: null,
+    currentLoanId: null,
+    users: [],
+    searchTimer: null,
+  },
+
+  // ─────────────────────────────────────────────────────────
+  // Init
+  // ─────────────────────────────────────────────────────────
+  async init() {
+    const user = await App.auth.check();
+    if (user) {
+      App.showApp(user);
+      App.navigate('dashboard');
+    } else {
+      App.showLogin();
+    }
+  },
+
+  showLogin() {
+    document.getElementById('app-login').classList.remove('hidden');
+    document.getElementById('app-main').classList.add('hidden');
+  },
+
+  showApp(user) {
+    document.getElementById('app-login').classList.add('hidden');
+    document.getElementById('app-main').classList.remove('hidden');
+    App.state.user = user;
+
+    // Update sidebar
+    document.getElementById('sidebar-name').textContent = user.name;
+    document.getElementById('sidebar-role').textContent = user.role.charAt(0).toUpperCase() + user.role.slice(1);
+    document.getElementById('sidebar-avatar').textContent = user.name.charAt(0).toUpperCase();
+
+    // Show/hide admin sections
+    document.querySelectorAll('.admin-only').forEach(el => {
+      el.classList.toggle('hidden', user.role !== 'admin');
+    });
+  },
+
+  // ─────────────────────────────────────────────────────────
+  // Router
+  // ─────────────────────────────────────────────────────────
+  navigate(page, params = {}) {
+    document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+    const pageEl = document.getElementById(`page-${page}`);
+    if (pageEl) pageEl.classList.remove('hidden');
+
+    const navEl = document.querySelector(`[data-page="${page}"]`);
+    if (navEl) navEl.classList.add('active');
+
+    // Update header
+    const titles = {
+      dashboard:   'Dashboard',
+      loans:       'Loan Pipeline',
+      'loan-detail': params.borrower ? `${params.borrower}` : 'Loan Detail',
+      admin:       'User Management',
+    };
+    document.getElementById('page-title').textContent = titles[page] || page;
+
+    // Header actions
+    const ha = document.getElementById('header-actions');
+    ha.innerHTML = '';
+    if (page === 'loans') {
+      ha.innerHTML = `<button class="btn btn-primary btn-sm" onclick="App.ui.showModal('modal-new-loan')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New Loan</button>`;
+    } else if (page === 'loan-detail') {
+      ha.innerHTML = `<button class="btn btn-secondary btn-sm" onclick="App.navigate('loans')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Back to Pipeline</button>`;
+    }
+
+    // Load page data
+    if (page === 'dashboard')   App.pages.dashboard.load();
+    if (page === 'loans')       App.pages.loans.load();
+    if (page === 'loan-detail') App.pages.loanDetail.load(params.id);
+    if (page === 'admin')       App.pages.admin.load();
+  },
+
+  // ─────────────────────────────────────────────────────────
+  // API Client
+  // ─────────────────────────────────────────────────────────
+  api: {
+    async request(method, url, data = null) {
+      const opts = { method, credentials: 'same-origin', headers: {} };
+      if (data) { opts.headers['Content-Type'] = 'application/json'; opts.body = JSON.stringify(data); }
+      const res = await fetch(url, opts);
+      if (res.status === 401) { App.auth.logout(); throw new Error('Session expired'); }
+      if (res.status === 204) return null;
+      return res.json();
+    },
+    get:    (url)       => App.api.request('GET',    url),
+    post:   (url, d)    => App.api.request('POST',   url, d),
+    put:    (url, d)    => App.api.request('PUT',    url, d),
+    delete: (url)       => App.api.request('DELETE', url),
+    async upload(url, formData) {
+      const res = await fetch(url, { method: 'POST', body: formData, credentials: 'same-origin' });
+      if (res.status === 401) { App.auth.logout(); throw new Error('Session expired'); }
+      return res.json();
+    },
+  },
+
+  // ─────────────────────────────────────────────────────────
+  // Auth
+  // ─────────────────────────────────────────────────────────
+  auth: {
+    async check() {
+      try {
+        const data = await App.api.get('/api/auth/me');
+        return data?.user || null;
+      } catch { return null; }
+    },
+    async logout() {
+      try { await App.api.post('/api/auth/logout'); } catch {}
+      App.state.user = null;
+      App.showLogin();
+    },
+  },
+
+  // ─────────────────────────────────────────────────────────
+  // UI Helpers
+  // ─────────────────────────────────────────────────────────
+  ui: {
+    showModal(id) {
+      document.getElementById('modal-overlay').classList.remove('hidden');
+      document.getElementById(id).style.display = 'flex';
+      document.getElementById(id).style.flexDirection = 'column';
+    },
+    hideModal(id) {
+      document.getElementById(id).style.display = 'none';
+      // Hide overlay if no modals visible
+      const visible = [...document.querySelectorAll('#modal-overlay .modal')].some(m => m.style.display !== 'none');
+      if (!visible) document.getElementById('modal-overlay').classList.add('hidden');
+    },
+    overlayClick(e) {
+      if (e.target === document.getElementById('modal-overlay')) {
+        document.querySelectorAll('#modal-overlay .modal').forEach(m => m.style.display = 'none');
+        document.getElementById('modal-overlay').classList.add('hidden');
+      }
+    },
+    toast(msg, type = 'info', duration = 3500) {
+      const el = document.createElement('div');
+      el.className = `toast ${type}`;
+      const icons = { success: '✓', error: '✕', info: 'ℹ', warning: '⚠' };
+      el.innerHTML = `<span style="font-size:16px;">${icons[type] || 'ℹ'}</span><span>${msg}</span>`;
+      document.getElementById('toast-container').appendChild(el);
+      setTimeout(() => el.remove(), duration);
+    },
+    setLoading(btnId, loading) {
+      const btn = document.getElementById(btnId);
+      if (!btn) return;
+      if (loading) { btn._orig = btn.innerHTML; btn.innerHTML = '<span class="spinner"></span>'; btn.disabled = true; }
+      else { btn.innerHTML = btn._orig || btn.innerHTML; btn.disabled = false; }
+    },
+    fmt: {
+      currency: v => v != null ? '$' + Number(v).toLocaleString('en-US', { minimumFractionDigits: 0 }) : '—',
+      date:     v => v ? new Date(v).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—',
+      dateTime: v => v ? new Date(v).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : '—',
+      fileSize: b => b > 1048576 ? (b/1048576).toFixed(1)+' MB' : b > 1024 ? (b/1024).toFixed(0)+' KB' : b+' B',
+    },
+    statusBadge(status) {
+      const map = {
+        application:    ['gray',   'Application'],
+        docs_pending:   ['yellow', 'Docs Pending'],
+        processing:     ['blue',   'Processing'],
+        underwriting:   ['purple', 'Underwriting'],
+        conditional:    ['orange', 'Conditional'],
+        clear_to_close: ['teal',   'Clear to Close'],
+        closed:         ['green',  'Closed'],
+        denied:         ['red',    'Denied'],
+        withdrawn:      ['gray',   'Withdrawn'],
+      };
+      const [color, label] = map[status] || ['gray', status];
+      return `<span class="badge badge-${color}">${label}</span>`;
+    },
+    roleBadge(role) {
+      return `<span class="badge badge-${role}">${role.charAt(0).toUpperCase() + role.slice(1)}</span>`;
+    },
+  },
+
+  // ─────────────────────────────────────────────────────────
+  // DASHBOARD PAGE
+  // ─────────────────────────────────────────────────────────
+  pages: {
+    dashboard: {
+      async load() {
+        // Load loans for stats
+        const data = await App.api.get('/api/loans').catch(() => ({ loans: [] }));
+        const loans = data.loans || [];
+        App.state.loans = loans;
+
+        const active    = loans.filter(l => !['closed','denied','withdrawn'].includes(l.status)).length;
+        const pending   = loans.filter(l => l.status === 'docs_pending').length;
+        const closed    = loans.filter(l => {
+          if (l.status !== 'closed') return false;
+          const d = new Date(l.updated_at);
+          const now = new Date();
+          return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+        }).length;
+        const ctc = loans.filter(l => l.status === 'clear_to_close').length;
+
+        document.getElementById('stats-grid').innerHTML = `
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <div>
+                <div class="stat-value">${active}</div>
+                <div class="stat-label">Active Loans</div>
+              </div>
+              <div class="stat-icon" style="background:var(--primary-light);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <div>
+                <div class="stat-value">${pending}</div>
+                <div class="stat-label">Docs Pending</div>
+              </div>
+              <div class="stat-icon" style="background:var(--warning-bg);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <div>
+                <div class="stat-value">${ctc}</div>
+                <div class="stat-label">Clear to Close</div>
+              </div>
+              <div class="stat-icon" style="background:var(--teal-bg);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <div>
+                <div class="stat-value">${closed}</div>
+                <div class="stat-label">Closed This Month</div>
+              </div>
+              <div class="stat-icon" style="background:var(--success-bg);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+            </div>
+          </div>`;
+
+        // Recent loans table
+        const recent = [...loans].sort((a,b) => b.updated_at > a.updated_at ? 1 : -1).slice(0, 8);
+        const wrap = document.getElementById('dashboard-recent-loans');
+        if (!recent.length) {
+          wrap.innerHTML = '<div class="empty-state"><h3>No loans yet</h3><p>Create your first loan file to get started.</p></div>';
+          return;
+        }
+        wrap.innerHTML = `<table>
+          <thead><tr>
+            <th>Borrower</th><th>Loan Amount</th><th>Property</th><th>Status</th><th>Updated</th>
+          </tr></thead>
+          <tbody>
+          ${recent.map(l => `<tr style="cursor:pointer" onclick="App.navigate('loan-detail',{id:'${l.id}',borrower:'${l.borrower_name.replace(/'/g,'')}'})">
+            <td><span class="font-semibold">${l.borrower_name}</span>${l.co_borrower_name ? `<br><span class="text-sm text-muted">${l.co_borrower_name}</span>` : ''}</td>
+            <td>${App.ui.fmt.currency(l.loan_amount)}</td>
+            <td class="truncate" style="max-width:200px">${l.property_address || '—'}</td>
+            <td>${App.ui.statusBadge(l.status)}</td>
+            <td class="text-sm text-muted">${App.ui.fmt.date(l.updated_at)}</td>
+          </tr>`).join('')}
+          </tbody></table>`;
+      },
+    },
+
+    // ─────────────────────────────────────────────────────
+    // LOANS PAGE
+    // ─────────────────────────────────────────────────────
+    loans: {
+      _loans: [],
+      async load() {
+        const data = await App.api.get('/api/loans').catch(() => ({ loans: [] }));
+        this._loans = data.loans || [];
+        App.state.loans = this._loans;
+        this.render(this._loans);
+
+        // Load users for assign-to select
+        if (App.state.user?.role === 'admin') {
+          const ud = await App.api.get('/api/users').catch(() => ({ users: [] }));
+          const sel = document.getElementById('select-assigned-to');
+          if (sel) {
+            sel.innerHTML = '<option value="">Me</option>' +
+              (ud.users || []).map(u => `<option value="${u.id}">${u.name}</option>`).join('');
+          }
+        }
+      },
+      render(loans) {
+        const wrap = document.getElementById('loans-table-wrap');
+        if (!loans.length) {
+          wrap.innerHTML = '<div class="empty-state"><h3>No loans found</h3><p>Try adjusting your filters or create a new loan file.</p></div>';
+          return;
+        }
+        wrap.innerHTML = `<table>
+          <thead><tr>
+            <th>Borrower</th><th>Loan Amount</th><th>Type</th><th>Property</th>
+            <th>Status</th><th>Assigned</th><th>Updated</th><th></th>
+          </tr></thead>
+          <tbody>
+          ${loans.map(l => `<tr>
+            <td>
+              <span class="font-semibold" style="cursor:pointer;color:var(--primary);" onclick="App.navigate('loan-detail',{id:'${l.id}',borrower:'${l.borrower_name.replace(/'/g,'')}'})">
+                ${l.borrower_name}
+              </span>
+              ${l.co_borrower_name ? `<br><span class="text-sm text-muted">${l.co_borrower_name}</span>` : ''}
+            </td>
+            <td>${App.ui.fmt.currency(l.loan_amount)}</td>
+            <td>${l.loan_type || '—'}</td>
+            <td class="truncate" style="max-width:180px">${l.property_address || '—'}</td>
+            <td>${App.ui.statusBadge(l.status)}</td>
+            <td>${l.assigned_name || '—'}</td>
+            <td class="text-sm text-muted">${App.ui.fmt.date(l.updated_at)}</td>
+            <td>
+              <div class="table-actions">
+                <button class="btn btn-ghost btn-sm btn-icon" title="View" onclick="App.navigate('loan-detail',{id:'${l.id}',borrower:'${l.borrower_name.replace(/'/g,'')}'})">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>`).join('')}
+          </tbody></table>`;
+      },
+      search(q) {
+        clearTimeout(App.state.searchTimer);
+        App.state.searchTimer = setTimeout(() => this.filter(), 350);
+      },
+      filter() {
+        const q      = document.getElementById('loan-search').value.toLowerCase();
+        const status = document.getElementById('loan-status-filter').value;
+        let filtered = this._loans;
+        if (status) filtered = filtered.filter(l => l.status === status);
+        if (q) filtered = filtered.filter(l =>
+          l.borrower_name?.toLowerCase().includes(q) ||
+          l.property_address?.toLowerCase().includes(q) ||
+          l.borrower_email?.toLowerCase().includes(q)
+        );
+        this.render(filtered);
+      },
+      async create() {
+        const form = document.getElementById('form-new-loan');
+        const data = Object.fromEntries(new FormData(form));
+        if (!data.borrower_name?.trim()) { App.ui.toast('Borrower name is required', 'error'); return; }
+
+        App.ui.setLoading('btn-save-loan', true);
+        try {
+          const res = await App.api.post('/api/loans', {
+            ...data,
+            loan_amount: data.loan_amount ? parseFloat(data.loan_amount) : null,
+            assigned_to: data.assigned_to || null,
+          });
+          if (res?.loan) {
+            App.ui.hideModal('modal-new-loan');
+            form.reset();
+            App.ui.toast('Loan file created!', 'success');
+            App.navigate('loan-detail', { id: res.loan.id, borrower: res.loan.borrower_name });
+          } else {
+            App.ui.toast(res?.error || 'Failed to create loan', 'error');
+          }
+        } catch (e) {
+          App.ui.toast('Error creating loan', 'error');
+        }
+        App.ui.setLoading('btn-save-loan', false);
+      },
+    },
+
+    // ─────────────────────────────────────────────────────
+    // LOAN DETAIL PAGE
+    // ─────────────────────────────────────────────────────
+    loanDetail: {
+      _loan: null,
+      _docs: [],
+      _items: [],
+      _emails: [],
+      _activeTab: 'documents',
+
+      async load(id) {
+        if (!id) return;
+        App.state.currentLoanId = id;
+        document.getElementById('loan-detail-content').innerHTML = '<div class="spinner-dark"></div>';
+
+        const data = await App.api.get(`/api/loans/${id}`).catch(() => null);
+        if (!data?.loan) {
+          document.getElementById('loan-detail-content').innerHTML = '<div class="empty-state"><h3>Loan not found</h3></div>';
+          return;
+        }
+
+        this._loan   = data.loan;
+        this._docs   = data.documents || [];
+        this._items  = data.missing_items || [];
+        this._emails = data.emails || [];
+
+        // Update page title
+        document.getElementById('page-title').textContent = data.loan.borrower_name;
+
+        this.render();
+      },
+
+      render() {
+        const l = this._loan;
+        const itemsPending  = this._items.filter(i => i.status === 'pending').length;
+        const itemsTotal    = this._items.length;
+        const docsAnalyzed  = this._docs.filter(d => d.analyzed).length;
+
+        document.getElementById('loan-detail-content').innerHTML = `
+        <!-- Top info cards -->
+        <div class="detail-grid">
+          <div class="card">
+            <div class="card-header" style="justify-content:space-between;">
+              <span class="card-title">Borrower Information</span>
+              <button class="btn btn-ghost btn-sm" onclick="App.pages.loanDetail.openEditModal()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Edit
+              </button>
+            </div>
+            <div class="card-body">
+              <div class="info-row"><span class="info-label">Borrower</span><span class="info-value font-semibold">${l.borrower_name}</span></div>
+              ${l.co_borrower_name ? `<div class="info-row"><span class="info-label">Co-Borrower</span><span class="info-value">${l.co_borrower_name}</span></div>` : ''}
+              <div class="info-row"><span class="info-label">Email</span><span class="info-value">${l.borrower_email ? `<a href="mailto:${l.borrower_email}" style="color:var(--primary)">${l.borrower_email}</a>` : '—'}</span></div>
+              <div class="info-row"><span class="info-label">Phone</span><span class="info-value">${l.borrower_phone || '—'}</span></div>
+              <div class="info-row"><span class="info-label">Status</span><span class="info-value">${App.ui.statusBadge(l.status)}</span></div>
+              <div class="info-row"><span class="info-label">Assigned To</span><span class="info-value">${l.assigned_name || '—'}</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">Loan Details</span></div>
+            <div class="card-body">
+              <div class="info-row"><span class="info-label">Loan Amount</span><span class="info-value font-semibold">${App.ui.fmt.currency(l.loan_amount)}</span></div>
+              <div class="info-row"><span class="info-label">Loan Type</span><span class="info-value">${l.loan_type || '—'}</span></div>
+              <div class="info-row"><span class="info-label">Purpose</span><span class="info-value">${l.loan_purpose || '—'}</span></div>
+              <div class="info-row"><span class="info-label">Property</span><span class="info-value">${l.property_address || '—'}</span></div>
+              <div class="info-row"><span class="info-label">Property Type</span><span class="info-value">${l.property_type || '—'}</span></div>
+              <div class="info-row"><span class="info-label">Opened</span><span class="info-value">${App.ui.fmt.date(l.created_at)}</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        ${l.notes ? `<div class="card detail-full" style="border-left:3px solid var(--primary);">
+          <div class="card-body" style="padding:14px 16px;">
+            <span style="font-size:11px;font-weight:600;color:var(--gray-500);text-transform:uppercase;letter-spacing:.05em;">Notes</span>
+            <p style="margin-top:6px;font-size:13px;color:var(--gray-700);white-space:pre-line;">${l.notes}</p>
+          </div>
+        </div>` : ''}
+
+        <!-- Tabbed section -->
+        <div class="card detail-full">
+          <div class="card-header" style="border-bottom:none;padding-bottom:0;">
+            <div class="tabs" style="margin-bottom:0;flex:1;">
+              <button class="tab-btn active" data-tab="documents" onclick="App.pages.loanDetail.switchTab('documents',this)">
+                Documents <span style="background:var(--gray-200);padding:1px 6px;border-radius:999px;font-size:11px;margin-left:4px;">${this._docs.length}</span>
+              </button>
+              <button class="tab-btn" data-tab="missing" onclick="App.pages.loanDetail.switchTab('missing',this)">
+                Missing Items
+                ${itemsPending > 0 ? `<span style="background:var(--danger-bg);color:var(--danger);padding:1px 6px;border-radius:999px;font-size:11px;margin-left:4px;">${itemsPending}</span>` : `<span style="background:var(--gray-200);padding:1px 6px;border-radius:999px;font-size:11px;margin-left:4px;">${itemsTotal}</span>`}
+              </button>
+              <button class="tab-btn" data-tab="emails" onclick="App.pages.loanDetail.switchTab('emails',this)">
+                Communications <span style="background:var(--gray-200);padding:1px 6px;border-radius:999px;font-size:11px;margin-left:4px;">${this._emails.length}</span>
+              </button>
+            </div>
+            <div class="flex gap-2" style="margin-left:auto;flex-shrink:0;">
+              <button class="btn btn-secondary btn-sm" onclick="App.pages.loanDetail.openEmail()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                Send Email
+              </button>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <!-- Documents Tab -->
+            <div class="tab-pane active" id="tab-documents">
+              <div style="margin-bottom:16px;">
+                <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()" ondragover="App.pages.loanDetail.dragOver(event)" ondragleave="App.pages.loanDetail.dragLeave(event)" ondrop="App.pages.loanDetail.drop(event)">
+                  <input type="file" id="file-input" multiple onchange="App.pages.loanDetail.handleFiles(this.files)">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="1.5" style="margin:0 auto 10px;display:block;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <p style="font-size:13px;font-weight:500;color:var(--gray-600);">Drop files here or click to upload</p>
+                  <p style="font-size:11px;color:var(--gray-400);margin-top:4px;">MISMO XML, PDF, Images — max 25 MB per file</p>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
+                  <select id="upload-category" class="filter-select" style="flex:1;">
+                    <option value="Other">Category: Other</option>
+                    <option value="MISMO">MISMO XML</option>
+                    <option value="Paystub">Pay Stub</option>
+                    <option value="BankStatement">Bank Statement</option>
+                    <option value="TaxReturn">Tax Return</option>
+                    <option value="ID">Government ID</option>
+                    <option value="Appraisal">Appraisal</option>
+                    <option value="TitleReport">Title Report</option>
+                    <option value="InsurancePolicy">Insurance Policy</option>
+                  </select>
+                </div>
+                <div id="upload-progress" class="hidden" style="margin-top:8px;font-size:12px;color:var(--primary);"></div>
+              </div>
+              <div id="docs-list">${this.renderDocs()}</div>
+            </div>
+
+            <!-- Missing Items Tab -->
+            <div class="tab-pane" id="tab-missing">
+              <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
+                <button class="btn btn-sm btn-secondary" onclick="App.ui.showModal('modal-add-item')">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  Add Item
+                </button>
+              </div>
+              <div id="items-list">${this.renderItems()}</div>
+            </div>
+
+            <!-- Emails Tab -->
+            <div class="tab-pane" id="tab-emails">
+              <div id="emails-list">${this.renderEmails()}</div>
+            </div>
+          </div>
+        </div>`;
+
+        // Set up edit modal defaults
+        document.getElementById('edit-loan-status').value = l.status;
+        document.getElementById('edit-loan-notes').value  = l.notes || '';
+      },
+
+      renderDocs() {
+        if (!this._docs.length) {
+          return '<div class="empty-state"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><h3>No documents</h3><p>Upload MISMO files, pay stubs, bank statements, or any supporting docs.</p></div>';
+        }
+        const catColors = { MISMO: '#3B82C4', Paystub: '#16A34A', BankStatement: '#7C3AED', TaxReturn: '#D97706', ID: '#0284C7', Other: '#64748B', Appraisal: '#EA580C', TitleReport: '#0F766E' };
+        return this._docs.map(d => {
+          const color = catColors[d.doc_category] || '#64748B';
+          const ext   = d.original_name.split('.').pop()?.toUpperCase() || 'FILE';
+          return `<div class="doc-item" id="doc-${d.id}">
+            <div class="doc-icon" style="background:${color}20;">
+              <span style="font-size:10px;font-weight:700;color:${color};">${ext.slice(0,4)}</span>
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div class="doc-name truncate">${d.original_name}</div>
+              <div class="doc-meta">${d.doc_category} &bull; ${App.ui.fmt.fileSize(d.file_size)} &bull; ${App.ui.fmt.date(d.uploaded_at)}
+                ${d.analyzed ? '<span style="color:var(--success);font-weight:600;margin-left:4px;">✓ Analyzed</span>' : ''}
+              </div>
+            </div>
+            <div class="doc-actions">
+              ${!d.analyzed ? `<button class="btn btn-sm btn-primary" onclick="App.pages.loanDetail.analyzeDoc('${d.id}')">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                Analyze
+              </button>` : `<button class="btn btn-sm btn-secondary" onclick="App.pages.loanDetail.viewAnalysis('${d.id}')">View Analysis</button>`}
+              <a class="btn btn-ghost btn-sm btn-icon" href="/api/documents/${d.id}/download" target="_blank" title="Download">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              </a>
+              <button class="btn btn-ghost btn-sm btn-icon" onclick="App.pages.loanDetail.deleteDoc('${d.id}')" title="Delete">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+              </button>
+            </div>
+          </div>`;
+        }).join('');
+      },
+
+      renderItems() {
+        if (!this._items.length) {
+          return '<div class="empty-state"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><h3>No missing items</h3><p>Add items manually or run AI analysis on uploaded documents.</p></div>';
+        }
+        const pending  = this._items.filter(i => i.status === 'pending');
+        const received = this._items.filter(i => i.status === 'received');
+        const waived   = this._items.filter(i => i.status === 'waived');
+
+        const renderGroup = (items, title, color) => {
+          if (!items.length) return '';
+          return `<p style="font-size:11px;font-weight:600;text-transform:uppercase;color:${color};letter-spacing:.05em;margin:12px 0 6px;">${title}</p>
+          <ul class="checklist">${items.map(item => `
+            <li class="checklist-item">
+              <button class="item-status-btn ${item.status !== 'pending' ? item.status : ''}"
+                onclick="App.pages.loanDetail.cycleItemStatus('${item.id}','${item.status}')"
+                title="Click to change status">
+                ${item.status === 'received' ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>' : item.status === 'waived' ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' : ''}
+              </button>
+              <span class="item-text ${item.status !== 'pending' ? 'done' : ''}">${item.item}</span>
+              <span class="item-source">${item.source}</span>
+              <button class="btn btn-ghost btn-sm btn-icon" onclick="App.pages.loanDetail.deleteItem('${item.id}')" title="Remove">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </li>`).join('')}
+          </ul>`;
+        };
+
+        return renderGroup(pending, 'Pending', 'var(--danger)') +
+               renderGroup(received, 'Received', 'var(--success)') +
+               renderGroup(waived, 'Waived', 'var(--gray-400)');
+      },
+
+      renderEmails() {
+        if (!this._emails.length) {
+          return '<div class="empty-state"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><h3>No emails sent</h3><p>Use the Send Email button to communicate with the borrower.</p></div>';
+        }
+        return this._emails.map(e => `
+          <div class="email-item">
+            <div class="email-subject">${e.subject}</div>
+            <div class="email-meta">
+              To: ${e.to_name ? e.to_name + ' &lt;' + e.to_email + '&gt;' : e.to_email}
+              &bull; ${App.ui.fmt.dateTime(e.sent_at)}
+              ${e.status === 'failed' ? '<span style="color:var(--danger);font-weight:600;"> &bull; Failed</span>' : '<span style="color:var(--success);"> &bull; Sent</span>'}
+            </div>
+          </div>`).join('');
+      },
+
+      switchTab(tab, btn) {
+        document.querySelectorAll('#loan-detail-content .tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('#loan-detail-content .tab-pane').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(`tab-${tab}`).classList.add('active');
+        this._activeTab = tab;
+      },
+
+      async handleFiles(files) {
+        const loanId   = App.state.currentLoanId;
+        const category = document.getElementById('upload-category').value;
+        const progress = document.getElementById('upload-progress');
+        progress.classList.remove('hidden');
+
+        for (const file of files) {
+          progress.textContent = `Uploading ${file.name}…`;
+          const fd = new FormData();
+          fd.append('loanId', loanId);
+          fd.append('category', category);
+          fd.append('file', file);
+          try {
+            const res = await App.api.upload('/api/documents/upload', fd);
+            if (res?.document) {
+              this._docs.unshift(res.document);
+              App.ui.toast(`${file.name} uploaded`, 'success');
+            } else {
+              App.ui.toast(res?.error || 'Upload failed', 'error');
+            }
+          } catch {
+            App.ui.toast(`Failed to upload ${file.name}`, 'error');
+          }
+        }
+        progress.classList.add('hidden');
+        document.getElementById('docs-list').innerHTML = this.renderDocs();
+      },
+
+      dragOver(e) { e.preventDefault(); document.getElementById('upload-zone').classList.add('drag-over'); },
+      dragLeave()  { document.getElementById('upload-zone').classList.remove('drag-over'); },
+      drop(e) { e.preventDefault(); document.getElementById('upload-zone').classList.remove('drag-over'); this.handleFiles(e.dataTransfer.files); },
+
+      async analyzeDoc(docId) {
+        App.ui.showModal('modal-analysis');
+        document.getElementById('modal-analysis-body').innerHTML = `
+          <div style="text-align:center;padding:20px;">
+            <div class="spinner-dark"></div>
+            <p style="margin-top:12px;color:var(--gray-500);">Analyzing document with AI…</p>
+          </div>`;
+
+        try {
+          const res = await App.api.post(`/api/documents/${docId}/analyze`);
+          if (res?.analysis) {
+            const a = res.analysis;
+            document.getElementById('modal-analysis-body').innerHTML = `
+              <div class="analysis-section">
+                <h4>Document Type</h4>
+                <p style="font-size:13px;color:var(--gray-700);">${a.document_type || '—'}</p>
+              </div>
+              <div class="analysis-section">
+                <h4>Summary</h4>
+                <p style="font-size:13px;color:var(--gray-700);">${a.summary || '—'}</p>
+              </div>
+              ${a.extracted_data && Object.keys(a.extracted_data).length ? `
+              <div class="analysis-section">
+                <h4>Extracted Data</h4>
+                <div class="analysis-kv">
+                  ${Object.entries(a.extracted_data).slice(0,20).map(([k,v]) =>
+                    `<span class="analysis-key">${k.replace(/_/g,' ')}</span><span class="analysis-val">${Array.isArray(v) ? v.join(', ') : String(v)}</span>`
+                  ).join('')}
+                </div>
+              </div>` : ''}
+              ${a.missing_items?.length ? `
+              <div class="analysis-section">
+                <h4>Missing Items (auto-added to checklist)</h4>
+                ${a.missing_items.map(i => `<div class="flag-item" style="background:var(--warning-bg);color:var(--warning);">• ${i}</div>`).join('')}
+              </div>` : ''}
+              ${a.flags?.length ? `
+              <div class="analysis-section">
+                <h4>Flags & Attention Items</h4>
+                ${a.flags.map(f => `<div class="flag-item">⚠ ${f}</div>`).join('')}
+              </div>` : ''}
+              <p style="font-size:11px;color:var(--gray-400);text-align:right;">Confidence: ${a.confidence || 'unknown'}</p>`;
+
+            // Refresh docs and items lists
+            const data = await App.api.get(`/api/loans/${App.state.currentLoanId}`).catch(() => null);
+            if (data) {
+              this._docs  = data.documents || [];
+              this._items = data.missing_items || [];
+              document.getElementById('docs-list').innerHTML  = this.renderDocs();
+              document.getElementById('items-list').innerHTML = this.renderItems();
+            }
+            App.ui.toast('Analysis complete!', 'success');
+          } else {
+            document.getElementById('modal-analysis-body').innerHTML = `<p style="color:var(--danger);">${res?.error || 'Analysis failed'}</p>`;
+          }
+        } catch {
+          document.getElementById('modal-analysis-body').innerHTML = `<p style="color:var(--danger);">Analysis request failed. Check API key configuration.</p>`;
+        }
+      },
+
+      viewAnalysis(docId) {
+        const doc = this._docs.find(d => d.id === docId);
+        if (!doc?.analysis) return App.ui.toast('No analysis available', 'info');
+        const a = typeof doc.analysis === 'string' ? JSON.parse(doc.analysis) : doc.analysis;
+        App.ui.showModal('modal-analysis');
+        document.getElementById('modal-analysis-body').innerHTML = `
+          <div class="analysis-section"><h4>Summary</h4><p style="font-size:13px;">${a.summary||'—'}</p></div>
+          ${a.extracted_data && Object.keys(a.extracted_data).length ? `
+          <div class="analysis-section"><h4>Extracted Data</h4><div class="analysis-kv">
+            ${Object.entries(a.extracted_data).slice(0,20).map(([k,v])=>`<span class="analysis-key">${k.replace(/_/g,' ')}</span><span class="analysis-val">${Array.isArray(v)?v.join(', '):String(v)}</span>`).join('')}
+          </div></div>` : ''}
+          ${a.flags?.length ? `<div class="analysis-section"><h4>Flags</h4>${a.flags.map(f=>`<div class="flag-item">⚠ ${f}</div>`).join('')}</div>` : ''}`;
+      },
+
+      async deleteDoc(docId) {
+        if (!confirm('Delete this document?')) return;
+        await App.api.delete(`/api/documents/${docId}/download`);
+        this._docs = this._docs.filter(d => d.id !== docId);
+        document.getElementById('docs-list').innerHTML = this.renderDocs();
+        App.ui.toast('Document deleted', 'info');
+      },
+
+      async cycleItemStatus(id, current) {
+        const next = current === 'pending' ? 'received' : current === 'received' ? 'waived' : 'pending';
+        const res  = await App.api.put(`/api/missing-items/${id}`, { status: next });
+        if (res?.id) {
+          const item = this._items.find(i => i.id === id);
+          if (item) item.status = next;
+          document.getElementById('items-list').innerHTML = this.renderItems();
+        }
+      },
+
+      async deleteItem(id) {
+        await App.api.delete(`/api/missing-items/${id}`);
+        this._items = this._items.filter(i => i.id !== id);
+        document.getElementById('items-list').innerHTML = this.renderItems();
+      },
+
+      async addMissingItem() {
+        const text = document.getElementById('new-item-text').value.trim();
+        if (!text) return App.ui.toast('Item description required', 'error');
+        const res = await App.api.post('/api/missing-items', { loan_id: App.state.currentLoanId, item: text });
+        if (res?.missing_item) {
+          this._items.push(res.missing_item);
+          document.getElementById('items-list').innerHTML = this.renderItems();
+          document.getElementById('new-item-text').value = '';
+          App.ui.hideModal('modal-add-item');
+          App.ui.toast('Item added', 'success');
+        }
+      },
+
+      openEmail() {
+        const l = this._loan;
+        document.getElementById('email-to').value      = l.borrower_email || '';
+        document.getElementById('email-to-name').value = l.borrower_name || '';
+        document.getElementById('email-template').value = 'custom';
+        document.getElementById('email-subject').value = '';
+        document.getElementById('email-body').value    = '';
+        App.ui.showModal('modal-send-email');
+      },
+
+      loadEmailTemplate() {
+        const l = this._loan;
+        const t = document.getElementById('email-template').value;
+        const name = l.borrower_name.split(' ')[0];
+        const pending = this._items.filter(i => i.status === 'pending').map(i => i.item);
+
+        const templates = {
+          missing_items: {
+            subject: `Action Required: Missing Documents — ${l.borrower_name} Loan File`,
+            body: `Dear ${name},\n\nThank you for choosing RMC Home Mortgage. I'm writing to let you know that we are still missing the following documents needed to process your loan:\n\n${pending.map(i => `  • ${i}`).join('\n') || '  (see your loan officer for details)'}\n\nPlease provide these items at your earliest convenience so we can move forward with your application.\n\nIf you have any questions, feel free to reach out to me directly.\n\nBest regards,\nZak Zouhari\nLoan Officer — RMC Home Mortgage\n(555) 000-0000 | zzouhari@rmchomemortgage.com`,
+          },
+          status_update: {
+            subject: `Loan Status Update — ${l.borrower_name}`,
+            body: `Dear ${name},\n\nI wanted to provide you with a quick update on your loan application.\n\nCurrent Status: ${l.status.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}\nProperty: ${l.property_address || 'As discussed'}\nLoan Amount: ${App.ui.fmt.currency(l.loan_amount)}\n\nWe are making great progress on your file. I will continue to keep you informed as things move forward.\n\nPlease don't hesitate to reach out if you have any questions.\n\nBest regards,\nZak Zouhari\nLoan Officer — RMC Home Mortgage\nzzouhari@rmchomemortgage.com`,
+          },
+          welcome: {
+            subject: `Welcome to RMC Home Mortgage — ${l.borrower_name}`,
+            body: `Dear ${name},\n\nWelcome! I'm excited to work with you on your mortgage journey.\n\nHere's what to expect next:\n\n1. Document Collection — We'll need a few items from you to get started\n2. Processing — Our team will review everything carefully\n3. Underwriting — Your file will be evaluated by our underwriting team\n4. Clear to Close — You'll receive final approval and closing instructions\n5. Closing — Sign the paperwork and get your keys!\n\nI'll be in touch soon with your initial document checklist.\n\nLooking forward to working with you!\n\nBest regards,\nZak Zouhari\nLoan Officer — RMC Home Mortgage\nzzouhari@rmchomemortgage.com`,
+          },
+          clear_to_close: {
+            subject: `🎉 Clear to Close! — ${l.borrower_name}`,
+            body: `Dear ${name},\n\nCongratulations! Your loan has been approved and you are CLEAR TO CLOSE!\n\nHere's what happens next:\n\n• Our closing team will reach out to schedule your closing date\n• Please bring a valid government-issued photo ID to closing\n• Funds for closing costs should be in a certified/cashier's check or wire transfer\n• You will receive your final Closing Disclosure at least 3 business days before closing\n\nThis is an exciting milestone and we couldn't be happier to help make your homeownership dream a reality!\n\nCongratulations again!\n\nZak Zouhari\nLoan Officer — RMC Home Mortgage\nzzouhari@rmchomemortgage.com`,
+          },
+          custom: { subject: '', body: '' },
+        };
+
+        const tmpl = templates[t];
+        if (tmpl) {
+          document.getElementById('email-subject').value = tmpl.subject;
+          document.getElementById('email-body').value    = tmpl.body;
+        }
+      },
+
+      async sendEmail() {
+        const to      = document.getElementById('email-to').value.trim();
+        const toName  = document.getElementById('email-to-name').value.trim();
+        const subject = document.getElementById('email-subject').value.trim();
+        const bodyTxt = document.getElementById('email-body').value.trim();
+        const tmpl    = document.getElementById('email-template').value;
+
+        if (!to || !subject || !bodyTxt) {
+          return App.ui.toast('To, Subject, and Message are required', 'error');
+        }
+
+        App.ui.setLoading('btn-send-email', true);
+        try {
+          const html = bodyTxt.replace(/\n/g, '<br>');
+          const res  = await App.api.post('/api/email/send', {
+            to, to_name: toName, subject,
+            html: `<div style="font-family:Arial,sans-serif;max-width:600px;padding:20px;">${html}</div>`,
+            text: bodyTxt, template: tmpl, loan_id: App.state.currentLoanId,
+          });
+          if (res?.message) {
+            App.ui.toast('Email sent successfully!', 'success');
+            App.ui.hideModal('modal-send-email');
+            // Refresh email log
+            const data = await App.api.get(`/api/loans/${App.state.currentLoanId}`).catch(() => null);
+            if (data) { this._emails = data.emails || []; }
+            if (document.getElementById('tab-emails')?.classList.contains('active')) {
+              document.getElementById('emails-list').innerHTML = this.renderEmails();
+            }
+          } else {
+            App.ui.toast(res?.error || 'Failed to send email', 'error');
+          }
+        } catch { App.ui.toast('Error sending email', 'error'); }
+        App.ui.setLoading('btn-send-email', false);
+      },
+
+      openEditModal() {
+        App.ui.showModal('modal-edit-loan');
+      },
+
+      async saveUpdate() {
+        const status = document.getElementById('edit-loan-status').value;
+        const notes  = document.getElementById('edit-loan-notes').value;
+        const res    = await App.api.put(`/api/loans/${App.state.currentLoanId}`, { status, notes });
+        if (res?.loan) {
+          this._loan = res.loan;
+          App.ui.hideModal('modal-edit-loan');
+          App.ui.toast('Loan updated', 'success');
+          this.render();
+        } else {
+          App.ui.toast(res?.error || 'Update failed', 'error');
+        }
+      },
+    },
+
+    // ─────────────────────────────────────────────────────
+    // ADMIN PAGE
+    // ─────────────────────────────────────────────────────
+    admin: {
+      _editingId: null,
+
+      async load() {
+        const data = await App.api.get('/api/users').catch(() => ({ users: [] }));
+        App.state.users = data.users || [];
+        this.render(App.state.users);
+      },
+
+      render(users) {
+        const wrap = document.getElementById('users-table-wrap');
+        if (!users.length) {
+          wrap.innerHTML = '<div class="empty-state"><h3>No users</h3></div>';
+          return;
+        }
+        wrap.innerHTML = `<table>
+          <thead><tr>
+            <th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Last Login</th><th>Created</th><th></th>
+          </tr></thead>
+          <tbody>
+          ${users.map(u => `<tr>
+            <td><span class="font-semibold">${u.name}</span></td>
+            <td style="color:var(--gray-600);">${u.email}</td>
+            <td>${App.ui.roleBadge(u.role)}</td>
+            <td>
+              ${u.active
+                ? '<span class="badge badge-green">Active</span>'
+                : '<span class="badge badge-red">Inactive</span>'}
+            </td>
+            <td class="text-sm text-muted">${App.ui.fmt.dateTime(u.last_login)}</td>
+            <td class="text-sm text-muted">${App.ui.fmt.date(u.created_at)}</td>
+            <td>
+              <div class="table-actions">
+                <button class="btn btn-ghost btn-sm" onclick="App.pages.admin.editUser('${u.id}')">Edit</button>
+                <button class="btn btn-ghost btn-sm" onclick="App.pages.admin.toggleActive('${u.id}', ${u.active})">
+                  ${u.active ? 'Deactivate' : 'Activate'}
+                </button>
+              </div>
+            </td>
+          </tr>`).join('')}
+          </tbody></table>`;
+      },
+
+      editUser(id) {
+        const u = App.state.users.find(u => u.id === id);
+        if (!u) return;
+        this._editingId = id;
+        const form = document.getElementById('form-new-user');
+        form.querySelector('[name=user_id]').value = id;
+        form.querySelector('[name=name]').value    = u.name;
+        form.querySelector('[name=email]').value   = u.email;
+        form.querySelector('[name=role]').value    = u.role;
+        form.querySelector('[name=password]').value = '';
+        document.getElementById('user-modal-title').textContent = 'Edit User';
+        document.getElementById('btn-save-user').textContent    = 'Save Changes';
+        document.getElementById('password-field').querySelector('label').textContent = 'New Password (leave blank to keep current)';
+        App.ui.showModal('modal-new-user');
+      },
+
+      async toggleActive(id, current) {
+        const newActive = current ? 0 : 1;
+        const res = await App.api.put(`/api/users/${id}`, { active: newActive });
+        if (res?.user) {
+          const u = App.state.users.find(u => u.id === id);
+          if (u) u.active = newActive;
+          this.render(App.state.users);
+          App.ui.toast(`User ${newActive ? 'activated' : 'deactivated'}`, 'success');
+        } else {
+          App.ui.toast(res?.error || 'Failed', 'error');
+        }
+      },
+
+      async saveUser() {
+        const form = document.getElementById('form-new-user');
+        const data = Object.fromEntries(new FormData(form));
+        const id   = data.user_id;
+        App.ui.setLoading('btn-save-user', true);
+
+        try {
+          let res;
+          if (id) {
+            // Update
+            const payload = { name: data.name, email: data.email, role: data.role };
+            if (data.password) payload.password = data.password;
+            res = await App.api.put(`/api/users/${id}`, payload);
+            if (res?.user) {
+              const idx = App.state.users.findIndex(u => u.id === id);
+              if (idx !== -1) App.state.users[idx] = res.user;
+              App.ui.toast('User updated', 'success');
+            }
+          } else {
+            // Create
+            res = await App.api.post('/api/users', data);
+            if (res?.user) {
+              App.state.users.push(res.user);
+              App.ui.toast('User created', 'success');
+            }
+          }
+          if (res?.error) { App.ui.toast(res.error, 'error'); }
+          else {
+            App.ui.hideModal('modal-new-user');
+            form.reset();
+            form.querySelector('[name=user_id]').value = '';
+            document.getElementById('user-modal-title').textContent = 'New User';
+            document.getElementById('btn-save-user').textContent    = 'Create User';
+            document.getElementById('password-field').querySelector('label').textContent = 'Password *';
+            this._editingId = null;
+            this.render(App.state.users);
+          }
+        } catch { App.ui.toast('Error saving user', 'error'); }
+        App.ui.setLoading('btn-save-user', false);
+      },
+    },
+  }, // end pages
+}; // end App
+
+// ─────────────────────────────────────────────────────────────────
+// Login Form
+// ─────────────────────────────────────────────────────────────────
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email    = document.getElementById('login-email').value;
+  const password = document.getElementById('login-password').value;
+  const errEl    = document.getElementById('login-error');
+  const btn      = document.getElementById('login-btn');
+
+  errEl.classList.add('hidden');
+  btn.innerHTML  = '<span class="spinner"></span>&nbsp;Signing in…';
+  btn.disabled   = true;
+
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+      credentials: 'same-origin',
+    });
+    const data = await res.json();
+    if (data?.user) {
+      App.showApp(data.user);
+      App.navigate('dashboard');
+    } else {
+      errEl.textContent = data?.error || 'Login failed. Please try again.';
+      errEl.classList.remove('hidden');
+    }
+  } catch {
+    errEl.textContent = 'Network error. Please try again.';
+    errEl.classList.remove('hidden');
+  }
+
+  btn.innerHTML = 'Sign In';
+  btn.disabled  = false;
+});
+
+// Nav click handlers
+document.querySelectorAll('[data-page]').forEach(btn => {
+  btn.addEventListener('click', () => App.navigate(btn.dataset.page));
+});
+
+// Kick off the app
+App.init();
+</script>
+</body>
+</html>
