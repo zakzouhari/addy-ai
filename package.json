@@ -1,7 +1,7 @@
 {
-  "name": "addy-ai",
-  "version": "1.0.0",
-  "description": "Addy AI — Mortgage Loan Processing Platform for RMC Home Mortgage",
+  "name": "clearpath-processor",
+  "version": "2.0.0",
+  "description": "Clearpath Processor — Loan Processing Platform by Clearpath Automation, LLC",
   "private": true,
   "scripts": {
     "dev": "wrangler pages dev . --compatibility-date=2024-09-02",

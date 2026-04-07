@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Addy AI — RMC Home Mortgage</title>
+<title>Clearpath Processor — Clearpath Automation, LLC</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -409,9 +409,9 @@ tbody tr:hover { background: var(--gray-50); }
 <div id="app-login">
   <div class="login-card">
     <div class="login-logo">
-      <div class="login-logo-mark">A</div>
-      <h1>Addy AI</h1>
-      <p>RMC Home Mortgage — Loan Processing Platform</p>
+      <div class="login-logo-mark">CP</div>
+      <h1>Clearpath Processor</h1>
+      <p>A Clearpath Automation, LLC product</p>
     </div>
     <form id="login-form">
       <div class="form-group">
@@ -428,7 +428,7 @@ tbody tr:hover { background: var(--gray-50); }
       </button>
     </form>
     <div class="login-footer">
-      Secured by Cloudflare &bull; &copy; 2025 RMC Home Mortgage
+      Secured by Cloudflare &bull; &copy; 2025 Clearpath Automation, LLC
     </div>
   </div>
 </div>
@@ -442,10 +442,10 @@ tbody tr:hover { background: var(--gray-50); }
   <aside id="sidebar">
     <div class="sidebar-brand">
       <div class="brand-logo">
-        <div class="brand-mark">A</div>
+        <div class="brand-mark">CP</div>
         <div class="brand-text">
-          <h2>Addy AI</h2>
-          <p>RMC Home Mortgage</p>
+          <h2>Clearpath Processor</h2>
+          <p>Clearpath Automation, LLC</p>
         </div>
       </div>
     </div>
@@ -467,6 +467,10 @@ tbody tr:hover { background: var(--gray-50); }
         <button class="nav-item admin-only" data-page="admin">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           User Management
+        </button>
+        <button class="nav-item admin-only" data-page="settings">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Settings
         </button>
       </div>
     </nav>
@@ -543,6 +547,40 @@ tbody tr:hover { background: var(--gray-50); }
     <div id="page-loan-detail" class="page page-content hidden">
       <div id="loan-detail-content">
         <div class="spinner-dark"></div>
+      </div>
+    </div>
+
+    <!-- ── SETTINGS PAGE ─────────────────────────────────────── -->
+    <div id="page-settings" class="page page-content hidden">
+      <div class="card" style="max-width:640px;">
+        <div class="card-header"><span class="card-title">Integration Settings</span></div>
+        <div class="card-body">
+          <p style="font-size:13px;color:var(--gray-500);margin-bottom:20px;">Configure Simple Nexus integration and default email addresses. These settings are shared across all loan files.</p>
+          <form id="form-settings">
+            <div class="form-group">
+              <label class="form-label">Simple Nexus Intake Email <span style="color:var(--gray-400);font-weight:400;">(for submitting loans to underwriting)</span></label>
+              <input class="form-control" name="simplenexus_email" type="email" placeholder="intake@simplenexus.com" id="setting-sn-email">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Borrower Portal URL Pattern <span style="color:var(--gray-400);font-weight:400;">(use {loan_number} as placeholder)</span></label>
+              <input class="form-control" name="simplenexus_portal_url" placeholder="https://rmchomemortgage.simplenexus.com/loans/{loan_number}" id="setting-sn-portal">
+              <p style="font-size:11px;color:var(--gray-400);margin-top:4px;">Included in all borrower outreach so they know where to upload missing docs.</p>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Default Underwriter Email <span style="color:var(--gray-400);font-weight:400;">(fallback if no Simple Nexus email)</span></label>
+              <input class="form-control" name="default_underwriter_email" type="email" placeholder="underwriting@lender.com" id="setting-uw-email">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Sender Name <span style="color:var(--gray-400);font-weight:400;">(appears in outgoing emails)</span></label>
+              <input class="form-control" name="sender_name" placeholder="Zak Zouhari — Clearpath Processor" id="setting-sender-name">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Twilio Phone Number <span style="color:var(--gray-400);font-weight:400;">(for SMS outreach)</span></label>
+              <input class="form-control" name="twilio_phone_number" placeholder="+18312823862" id="setting-twilio-phone">
+            </div>
+          </form>
+          <button class="btn btn-primary" id="btn-save-settings" onclick="App.pages.settings.save()">Save Settings</button>
+        </div>
       </div>
     </div>
 
@@ -738,7 +776,7 @@ tbody tr:hover { background: var(--gray-50); }
         <label class="form-label">Message *</label>
         <textarea class="form-control" id="email-body" style="min-height:200px;" required></textarea>
       </div>
-      <p style="font-size:11px;color:var(--gray-400);">Sent from: Zak Zouhari - RMC Home Mortgage &lt;zzouhari@rmchomemortgage.com&gt;</p>
+      <p style="font-size:11px;color:var(--gray-400);">Sent from: Clearpath Processor &lt;zzouhari@rmchomemortgage.com&gt;</p>
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="App.ui.hideModal('modal-send-email')">Cancel</button>
@@ -782,6 +820,119 @@ tbody tr:hover { background: var(--gray-50); }
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="App.ui.hideModal('modal-analysis')">Close</button>
+    </div>
+  </div>
+
+  <!-- Import MISMO Modal -->
+  <div class="modal modal-lg" id="modal-import-mismo" style="display:none;">
+    <div class="modal-header">
+      <span class="modal-title">Import MISMO XML</span>
+      <button class="modal-close" onclick="App.ui.hideModal('modal-import-mismo')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:16px;">Upload a MISMO 3.x XML file to automatically create a new loan file with borrower info, loan details, and a standard missing items checklist pre-populated.</p>
+      <div class="upload-zone" id="mismo-drop-zone" onclick="document.getElementById('mismo-file-input').click()" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="event.preventDefault();this.classList.remove('drag-over');App.pages.loans.handleMismoFile(event.dataTransfer.files[0])">
+        <input type="file" id="mismo-file-input" accept=".xml,.mismo" onchange="App.pages.loans.handleMismoFile(this.files[0])">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="1.5" style="margin:0 auto 10px;display:block;"><polyline points="8 17 12 21 16 17"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/></svg>
+        <p style="font-size:13px;font-weight:500;color:var(--gray-600);">Drop MISMO XML file here or click to browse</p>
+        <p style="font-size:11px;color:var(--gray-400);margin-top:4px;">Accepts .xml files — max 25 MB</p>
+      </div>
+      <div id="mismo-import-result" class="hidden" style="margin-top:16px;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="App.ui.hideModal('modal-import-mismo')">Close</button>
+    </div>
+  </div>
+
+  <!-- Send Reminder Modal -->
+  <div class="modal modal-lg" id="modal-send-reminder" style="display:none;">
+    <div class="modal-header">
+      <span class="modal-title">Send Borrower Reminder</span>
+      <button class="modal-close" onclick="App.ui.hideModal('modal-send-reminder')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:16px;">Send reminders about outstanding missing items via one or more channels. The borrower's Simple Nexus portal link will be included so they know where to upload documents.</p>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+        <label style="display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;">
+          <input type="checkbox" id="reminder-ch-email" checked style="width:16px;height:16px;">
+          <span><strong>Email</strong> — sends to borrower email address</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;">
+          <input type="checkbox" id="reminder-ch-sms" style="width:16px;height:16px;">
+          <span><strong>SMS</strong> — sends text to borrower phone (requires Twilio)</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;">
+          <input type="checkbox" id="reminder-ch-voice" style="width:16px;height:16px;">
+          <span><strong>AI Voice Call</strong> — ElevenLabs outbound call to borrower phone</span>
+        </label>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Custom Message <span style="color:var(--gray-400);font-weight:400;">(optional — appended to default template)</span></label>
+        <textarea class="form-control" id="reminder-custom-msg" rows="3" placeholder="Please submit your documents as soon as possible…"></textarea>
+      </div>
+      <div id="reminder-result" class="hidden" style="margin-top:12px;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="App.ui.hideModal('modal-send-reminder')">Cancel</button>
+      <button class="btn btn-primary" id="btn-send-reminder" onclick="App.pages.loanDetail.sendReminder()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Send Reminder
+      </button>
+    </div>
+  </div>
+
+  <!-- Cover Letter + Submit to UW Modal -->
+  <div class="modal modal-lg" id="modal-submit-uw" style="display:none;">
+    <div class="modal-header">
+      <span class="modal-title">Submit to Underwriter</span>
+      <button class="modal-close" onclick="App.ui.hideModal('modal-submit-uw')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Loan Number <span style="color:var(--gray-400);font-weight:400;">(appears in subject line for Simple Nexus routing)</span></label>
+        <input class="form-control" id="uw-loan-number" placeholder="e.g. 2024-00123">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Submission Method</label>
+        <select class="form-control" id="uw-mode" onchange="App.pages.loanDetail.uwModeChange()">
+          <option value="email_simplenexus">Email to Simple Nexus intake (recommended)</option>
+          <option value="email_underwriter">Email directly to underwriter</option>
+          <option value="download">Download bundle manifest (manual upload)</option>
+        </select>
+      </div>
+      <div id="uw-email-override" class="form-group hidden">
+        <label class="form-label">Underwriter Email</label>
+        <input class="form-control" id="uw-email" type="email" placeholder="underwriting@lender.com">
+      </div>
+      <div id="uw-sn-override" class="form-group" style="font-size:12px;color:var(--gray-500);background:var(--gray-50);padding:10px 12px;border-radius:8px;border:1px solid var(--gray-200);">
+        <span id="uw-sn-info">Will send to the configured Simple Nexus intake email.</span>
+      </div>
+      <div class="form-group" style="margin-top:12px;">
+        <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;">
+          <input type="checkbox" id="uw-gen-cover-letter" checked style="width:16px;height:16px;">
+          <span>Generate AI cover letter and include in submission</span>
+        </label>
+      </div>
+      <div id="uw-result" class="hidden" style="margin-top:12px;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="App.ui.hideModal('modal-submit-uw')">Cancel</button>
+      <button class="btn btn-primary" id="btn-submit-uw" onclick="App.pages.loanDetail.submitToUnderwriter()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Submit Package
+      </button>
+    </div>
+  </div>
+
+  <!-- AI Loan Analysis Result Modal -->
+  <div class="modal modal-lg" id="modal-loan-analysis" style="display:none;">
+    <div class="modal-header">
+      <span class="modal-title">AI Loan Analysis</span>
+      <button class="modal-close" onclick="App.ui.hideModal('modal-loan-analysis')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body" id="modal-loan-analysis-body"><div class="spinner-dark"></div></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="App.ui.hideModal('modal-loan-analysis')">Close</button>
     </div>
   </div>
 
@@ -846,6 +997,10 @@ const App = {
     if (user) {
       App.showApp(user);
       App.navigate('dashboard');
+      // Load portal URL for email templates
+      App.api.get('/api/settings').then(d => {
+        if (d?.settings?.simplenexus_portal_url) App.state._snPortalUrl = d.settings.simplenexus_portal_url;
+      }).catch(() => {});
     } else {
       App.showLogin();
     }
@@ -891,6 +1046,7 @@ const App = {
       loans:       'Loan Pipeline',
       'loan-detail': params.borrower ? `${params.borrower}` : 'Loan Detail',
       admin:       'User Management',
+      settings:    'Settings',
     };
     document.getElementById('page-title').textContent = titles[page] || page;
 
@@ -898,11 +1054,26 @@ const App = {
     const ha = document.getElementById('header-actions');
     ha.innerHTML = '';
     if (page === 'loans') {
-      ha.innerHTML = `<button class="btn btn-primary btn-sm" onclick="App.ui.showModal('modal-new-loan')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New Loan</button>`;
+      ha.innerHTML = `
+        <button class="btn btn-secondary btn-sm" onclick="App.ui.showModal('modal-import-mismo')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="8 17 12 21 16 17"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/></svg>
+          Import MISMO</button>
+        <button class="btn btn-primary btn-sm" onclick="App.ui.showModal('modal-new-loan')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          New Loan</button>`;
     } else if (page === 'loan-detail') {
-      ha.innerHTML = `<button class="btn btn-secondary btn-sm" onclick="App.navigate('loans')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Back to Pipeline</button>`;
+      ha.innerHTML = `
+        <button class="btn btn-secondary btn-sm" onclick="App.navigate('loans')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Back to Pipeline</button>
+        <button class="btn btn-secondary btn-sm" onclick="App.pages.loanDetail.runAiAnalysis()" id="btn-ai-analyze">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          AI Analyze</button>
+        <button class="btn btn-secondary btn-sm" onclick="App.ui.showModal('modal-send-reminder')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.65 3.32 2 2 0 0 1 3.62 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.5 16z"/></svg>
+          Send Reminder</button>
+        <button class="btn btn-primary btn-sm" onclick="App.ui.showModal('modal-submit-uw')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Submit to UW</button>`;
     }
 
     // Load page data
@@ -910,6 +1081,7 @@ const App = {
     if (page === 'loans')       App.pages.loans.load();
     if (page === 'loan-detail') App.pages.loanDetail.load(params.id);
     if (page === 'admin')       App.pages.admin.load();
+    if (page === 'settings')    App.pages.settings.load();
   },
 
   // ─────────────────────────────────────────────────────────
@@ -1334,7 +1506,11 @@ const App = {
 
             <!-- Missing Items Tab -->
             <div class="tab-pane" id="tab-missing">
-              <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
+              <div style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px;">
+                <button class="btn btn-sm btn-secondary" onclick="App.pages.loanDetail.runAiAnalysis()">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                  AI Analyze
+                </button>
                 <button class="btn btn-sm btn-secondary" onclick="App.ui.showModal('modal-add-item')">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                   Add Item
@@ -1605,19 +1781,19 @@ const App = {
         const templates = {
           missing_items: {
             subject: `Action Required: Missing Documents — ${l.borrower_name} Loan File`,
-            body: `Dear ${name},\n\nThank you for choosing RMC Home Mortgage. I'm writing to let you know that we are still missing the following documents needed to process your loan:\n\n${pending.map(i => `  • ${i}`).join('\n') || '  (see your loan officer for details)'}\n\nPlease provide these items at your earliest convenience so we can move forward with your application.\n\nIf you have any questions, feel free to reach out to me directly.\n\nBest regards,\nZak Zouhari\nLoan Officer — RMC Home Mortgage\n(555) 000-0000 | zzouhari@rmchomemortgage.com`,
+            body: `Dear ${name},\n\nThank you for choosing Clearpath Automation. We are still missing the following documents needed to process your loan:\n\n${pending.map(i => `  • ${i}`).join('\n') || '  (see your loan processor for details)'}\n\nTo submit your documents, please use your secure borrower portal:\n  ${App.state._snPortalUrl ? App.state._snPortalUrl.replace('{loan_number}', l.extracted_data?.loan_number || '') : '(your processor will send you a portal link)'}\n\nPlease provide these items at your earliest convenience so we can move forward with your application.\n\nBest regards,\nYour Clearpath Processor Team\nzzouhari@rmchomemortgage.com`,
           },
           status_update: {
             subject: `Loan Status Update — ${l.borrower_name}`,
-            body: `Dear ${name},\n\nI wanted to provide you with a quick update on your loan application.\n\nCurrent Status: ${l.status.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}\nProperty: ${l.property_address || 'As discussed'}\nLoan Amount: ${App.ui.fmt.currency(l.loan_amount)}\n\nWe are making great progress on your file. I will continue to keep you informed as things move forward.\n\nPlease don't hesitate to reach out if you have any questions.\n\nBest regards,\nZak Zouhari\nLoan Officer — RMC Home Mortgage\nzzouhari@rmchomemortgage.com`,
+            body: `Dear ${name},\n\nI wanted to provide you with a quick update on your loan application.\n\nCurrent Status: ${l.status.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}\nProperty: ${l.property_address || 'As discussed'}\nLoan Amount: ${App.ui.fmt.currency(l.loan_amount)}\n\nWe are making great progress on your file. I will continue to keep you informed as things move forward.\n\nBest regards,\nYour Clearpath Processor Team\nzzouhari@rmchomemortgage.com`,
           },
           welcome: {
-            subject: `Welcome to RMC Home Mortgage — ${l.borrower_name}`,
-            body: `Dear ${name},\n\nWelcome! I'm excited to work with you on your mortgage journey.\n\nHere's what to expect next:\n\n1. Document Collection — We'll need a few items from you to get started\n2. Processing — Our team will review everything carefully\n3. Underwriting — Your file will be evaluated by our underwriting team\n4. Clear to Close — You'll receive final approval and closing instructions\n5. Closing — Sign the paperwork and get your keys!\n\nI'll be in touch soon with your initial document checklist.\n\nLooking forward to working with you!\n\nBest regards,\nZak Zouhari\nLoan Officer — RMC Home Mortgage\nzzouhari@rmchomemortgage.com`,
+            subject: `Welcome — ${l.borrower_name} Loan File Opened`,
+            body: `Dear ${name},\n\nWelcome! We're excited to work with you on your mortgage journey.\n\nHere's what to expect next:\n\n1. Document Collection — We'll need a few items from you to get started\n2. Processing — Our team will review everything carefully\n3. Underwriting — Your file will be evaluated by our underwriting team\n4. Clear to Close — You'll receive final approval and closing instructions\n5. Closing — Sign the paperwork and get your keys!\n\nYou can upload documents directly to your borrower portal:\n  ${App.state._snPortalUrl ? App.state._snPortalUrl.replace('{loan_number}', l.extracted_data?.loan_number || '') : '(your processor will send you a portal link)'}\n\nLooking forward to working with you!\n\nBest regards,\nYour Clearpath Processor Team\nzzouhari@rmchomemortgage.com`,
           },
           clear_to_close: {
-            subject: `🎉 Clear to Close! — ${l.borrower_name}`,
-            body: `Dear ${name},\n\nCongratulations! Your loan has been approved and you are CLEAR TO CLOSE!\n\nHere's what happens next:\n\n• Our closing team will reach out to schedule your closing date\n• Please bring a valid government-issued photo ID to closing\n• Funds for closing costs should be in a certified/cashier's check or wire transfer\n• You will receive your final Closing Disclosure at least 3 business days before closing\n\nThis is an exciting milestone and we couldn't be happier to help make your homeownership dream a reality!\n\nCongratulations again!\n\nZak Zouhari\nLoan Officer — RMC Home Mortgage\nzzouhari@rmchomemortgage.com`,
+            subject: `Clear to Close! — ${l.borrower_name}`,
+            body: `Dear ${name},\n\nCongratulations! Your loan has been approved and you are CLEAR TO CLOSE!\n\nHere's what happens next:\n\n• Our closing team will reach out to schedule your closing date\n• Please bring a valid government-issued photo ID to closing\n• Funds for closing costs should be in a certified/cashier's check or wire transfer\n• You will receive your final Closing Disclosure at least 3 business days before closing\n\nThis is an exciting milestone and we couldn't be happier to help make your homeownership dream a reality!\n\nCongratulations again!\n\nYour Clearpath Processor Team\nzzouhari@rmchomemortgage.com`,
           },
           custom: { subject: '', body: '' },
         };
@@ -1839,6 +2015,217 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
   btn.innerHTML = 'Sign In';
   btn.disabled  = false;
 });
+
+// ── MISMO Import (on App.pages.loans) ─────────────────────────────────────
+App.pages.loans.handleMismoFile = async function(file) {
+  if (!file) return;
+  const resultEl = document.getElementById('mismo-import-result');
+  resultEl.classList.remove('hidden');
+  resultEl.innerHTML = `<div style="display:flex;align-items:center;gap:8px;color:var(--primary);"><div class="spinner" style="border-color:rgba(59,130,196,.3);border-top-color:var(--primary);"></div> Parsing MISMO XML and creating loan file…</div>`;
+
+  const fd = new FormData();
+  fd.append('file', file);
+  try {
+    const res = await App.api.upload('/api/loans/import-mismo', fd);
+    if (res?.loan) {
+      resultEl.innerHTML = `<div style="background:var(--success-bg);color:var(--success);padding:12px;border-radius:8px;">
+        <strong>✓ Loan created successfully!</strong><br>
+        <span style="font-size:12px;">Borrower: ${res.loan.borrower_name} &bull; ${res.parsed_fields} fields extracted</span><br>
+        <button class="btn btn-sm btn-primary" style="margin-top:8px;" onclick="App.ui.hideModal('modal-import-mismo');App.navigate('loan-detail',{id:'${res.loan.id}',borrower:'${res.loan.borrower_name}'})">Open Loan File →</button>
+      </div>`;
+      App.ui.toast('MISMO imported — loan file created!', 'success');
+      // Refresh loans list in background
+      const data = await App.api.get('/api/loans').catch(() => null);
+      if (data?.loans) { this._loans = data.loans; App.state.loans = data.loans; }
+    } else {
+      resultEl.innerHTML = `<div style="background:var(--danger-bg);color:var(--danger);padding:12px;border-radius:8px;">✕ ${res?.error || 'Import failed'}</div>`;
+    }
+  } catch (e) {
+    resultEl.innerHTML = `<div style="background:var(--danger-bg);color:var(--danger);padding:12px;border-radius:8px;">✕ Network error during import</div>`;
+  }
+};
+
+// ── AI Loan Analysis ─────────────────────────────────────────────────────
+App.pages.loanDetail.runAiAnalysis = async function() {
+  App.ui.showModal('modal-loan-analysis');
+  document.getElementById('modal-loan-analysis-body').innerHTML = `
+    <div style="text-align:center;padding:20px;">
+      <div class="spinner-dark"></div>
+      <p style="margin-top:12px;color:var(--gray-500);">Analyzing full loan file with AI…<br><span style="font-size:11px;">Reviewing all docs, borrower profile, and missing items</span></p>
+    </div>`;
+  try {
+    const res = await App.api.post(`/api/loans/${App.state.currentLoanId}/analyze`);
+    if (res?.analysis) {
+      const a = res.analysis;
+      const pct = a.completion_pct ?? '?';
+      const pctColor = pct >= 80 ? 'var(--success)' : pct >= 50 ? 'var(--warning)' : 'var(--danger)';
+      document.getElementById('modal-loan-analysis-body').innerHTML = `
+        <div style="margin-bottom:16px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+            <div style="font-size:32px;font-weight:700;color:${pctColor};">${pct}%</div>
+            <div><div style="font-weight:600;">File Completeness</div><div style="font-size:12px;color:var(--gray-500);">${res.items_added} new missing items added to checklist</div></div>
+          </div>
+          <p style="font-size:13px;color:var(--gray-700);background:var(--gray-50);padding:12px;border-radius:8px;">${a.assessment}</p>
+        </div>
+        ${a.missing_items?.length ? `<div class="analysis-section"><h4>Missing Items Identified (${a.missing_items.length})</h4>
+          ${a.missing_items.map(i => `<div style="display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--gray-100);">
+            <span class="badge badge-${i.priority==='critical'?'red':i.priority==='nice-to-have'?'gray':'yellow'}" style="flex-shrink:0;">${i.priority||'normal'}</span>
+            <div><div style="font-size:13px;">${i.item}</div><div style="font-size:11px;color:var(--gray-400);">${i.reason||''}</div></div>
+          </div>`).join('')}
+        </div>` : ''}
+        ${a.strengths?.length ? `<div class="analysis-section" style="margin-top:12px;"><h4>File Strengths</h4>
+          ${a.strengths.map(s => `<div style="font-size:12px;color:var(--success);padding:3px 0;">✓ ${s}</div>`).join('')}
+        </div>` : ''}
+        ${a.flags?.length ? `<div class="analysis-section" style="margin-top:12px;"><h4>Flags</h4>
+          ${a.flags.map(f => `<div class="flag-item">⚠ ${f}</div>`).join('')}
+        </div>` : ''}`;
+      // Refresh missing items list
+      const data = await App.api.get(`/api/loans/${App.state.currentLoanId}`).catch(()=>null);
+      if (data) {
+        this._items = data.missing_items || [];
+        const itemsEl = document.getElementById('items-list');
+        if (itemsEl) itemsEl.innerHTML = this.renderItems();
+      }
+      App.ui.toast(`Analysis done — ${res.items_added} items added`, 'success');
+    } else {
+      document.getElementById('modal-loan-analysis-body').innerHTML = `<p style="color:var(--danger);">${res?.error||'Analysis failed'}</p>`;
+    }
+  } catch (e) {
+    document.getElementById('modal-loan-analysis-body').innerHTML = `<p style="color:var(--danger);">Analysis request failed. Check API key configuration.</p>`;
+  }
+};
+
+// ── Send Reminder ────────────────────────────────────────────────────────
+App.pages.loanDetail.sendReminder = async function() {
+  const channels = [];
+  if (document.getElementById('reminder-ch-email').checked) channels.push('email');
+  if (document.getElementById('reminder-ch-sms').checked)   channels.push('sms');
+  if (document.getElementById('reminder-ch-voice').checked) channels.push('voice');
+  if (!channels.length) return App.ui.toast('Select at least one channel', 'error');
+
+  const customMsg = document.getElementById('reminder-custom-msg').value.trim();
+  const resultEl  = document.getElementById('reminder-result');
+  App.ui.setLoading('btn-send-reminder', true);
+  resultEl.classList.add('hidden');
+
+  try {
+    const res = await App.api.post(`/api/loans/${App.state.currentLoanId}/send-reminder`, { channels, custom_message: customMsg || undefined });
+    if (res?.results) {
+      const lines = [];
+      if (res.results.email)  lines.push(`Email: ${res.results.email.success ? '✓ Sent to ' + res.results.email.to : '✕ ' + (res.results.email.error||'Failed')}`);
+      if (res.results.sms)    lines.push(`SMS: ${res.results.sms.success ? '✓ Sent to ' + res.results.sms.to : '✕ ' + (res.results.sms.error||'Failed')}`);
+      if (res.results.voice)  lines.push(`Voice: ${res.results.voice.success ? '✓ Call initiated to ' + res.results.voice.to : '✕ ' + (res.results.voice.error||'Failed')}`);
+      resultEl.innerHTML = `<div style="background:var(--success-bg);color:var(--success);padding:10px 12px;border-radius:8px;font-size:13px;">${lines.join('<br>')}</div>`;
+      resultEl.classList.remove('hidden');
+      App.ui.toast('Reminder sent!', 'success');
+      // Refresh email list
+      const data = await App.api.get(`/api/loans/${App.state.currentLoanId}`).catch(()=>null);
+      if (data) { this._emails = data.emails || []; }
+    } else {
+      resultEl.innerHTML = `<div style="background:var(--danger-bg);color:var(--danger);padding:10px 12px;border-radius:8px;font-size:13px;">${res?.error||'Failed to send reminder'}</div>`;
+      resultEl.classList.remove('hidden');
+    }
+  } catch { resultEl.innerHTML = `<div style="background:var(--danger-bg);color:var(--danger);padding:10px 12px;border-radius:8px;">Network error</div>`; resultEl.classList.remove('hidden'); }
+  App.ui.setLoading('btn-send-reminder', false);
+};
+
+// ── Submit to Underwriter ────────────────────────────────────────────────
+App.pages.loanDetail.uwModeChange = function() {
+  const mode = document.getElementById('uw-mode').value;
+  const emailOverride = document.getElementById('uw-email-override');
+  const snInfo = document.getElementById('uw-sn-override');
+  if (mode === 'email_underwriter') {
+    emailOverride.classList.remove('hidden');
+    snInfo.classList.add('hidden');
+  } else if (mode === 'email_simplenexus') {
+    emailOverride.classList.add('hidden');
+    snInfo.classList.remove('hidden');
+  } else {
+    emailOverride.classList.add('hidden');
+    snInfo.classList.add('hidden');
+  }
+};
+
+App.pages.loanDetail.submitToUnderwriter = async function() {
+  const mode       = document.getElementById('uw-mode').value;
+  const loanNumber = document.getElementById('uw-loan-number').value.trim();
+  const uwEmail    = document.getElementById('uw-email').value.trim();
+  const genCoverLetter = document.getElementById('uw-gen-cover-letter').checked;
+  const resultEl   = document.getElementById('uw-result');
+
+  if (mode === 'email_underwriter' && !uwEmail) return App.ui.toast('Underwriter email required', 'error');
+  App.ui.setLoading('btn-submit-uw', true);
+  resultEl.classList.add('hidden');
+
+  try {
+    let coverLetterHtml = null;
+    if (genCoverLetter) {
+      App.ui.toast('Generating cover letter…', 'info');
+      const clRes = await App.api.post(`/api/loans/${App.state.currentLoanId}/generate-cover-letter`).catch(()=>null);
+      if (clRes?.html) coverLetterHtml = clRes.html;
+    }
+
+    const payload = { mode, loan_number: loanNumber || undefined, cover_letter_html: coverLetterHtml || undefined };
+    if (mode === 'email_underwriter') payload.underwriter_email = uwEmail;
+
+    const res = await App.api.post(`/api/loans/${App.state.currentLoanId}/submit-to-underwriter`, payload);
+    if (res?.message || res?.documents) {
+      const isDownload = mode === 'download';
+      resultEl.innerHTML = `<div style="background:var(--success-bg);color:var(--success);padding:12px;border-radius:8px;font-size:13px;">
+        ${isDownload
+          ? `✓ Bundle ready — ${res.documents?.length||0} documents. <a href="#" onclick="App.pages.loanDetail.downloadBundle(${JSON.stringify(res).replace(/"/g,'&quot;')})" style="color:var(--success);font-weight:600;">Download list</a>`
+          : `✓ ${res.message || 'Submitted'} (Loan #${res.loan_number || loanNumber || '—'})`}
+      </div>`;
+      resultEl.classList.remove('hidden');
+      App.ui.toast(isDownload ? 'Bundle manifest ready' : 'Submission sent!', 'success');
+      // Refresh emails
+      const data = await App.api.get(`/api/loans/${App.state.currentLoanId}`).catch(()=>null);
+      if (data) { this._emails = data.emails||[]; }
+    } else {
+      resultEl.innerHTML = `<div style="background:var(--danger-bg);color:var(--danger);padding:12px;border-radius:8px;">${res?.error||'Submission failed'}</div>`;
+      resultEl.classList.remove('hidden');
+    }
+  } catch (e) {
+    resultEl.innerHTML = `<div style="background:var(--danger-bg);color:var(--danger);padding:12px;border-radius:8px;">Error: ${e.message}</div>`;
+    resultEl.classList.remove('hidden');
+  }
+  App.ui.setLoading('btn-submit-uw', false);
+};
+
+App.pages.loanDetail.downloadBundle = function(bundleData) {
+  const lines = [`Loan Bundle — ${bundleData.borrower}\nLoan #: ${bundleData.loan_number}\nGenerated: ${bundleData.generated_at}\n\nDocuments (${bundleData.documents?.length||0}):\n`];
+  (bundleData.documents||[]).forEach(d => lines.push(`${d.order}. [${d.category}] ${d.name}`));
+  lines.push('\nInstructions: Download each file from the loan documents tab and upload to Simple Nexus or your UW portal using the loan number above.');
+  const blob = new Blob([lines.join('\n')], {type:'text/plain'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `loan-bundle-${bundleData.loan_number||'bundle'}.txt`; a.click();
+};
+
+// ── Settings Page ────────────────────────────────────────────────────────
+App.pages.settings = {
+  async load() {
+    const data = await App.api.get('/api/settings').catch(()=>null);
+    if (data?.settings) {
+      const s = data.settings;
+      document.getElementById('setting-sn-email').value     = s.simplenexus_email || '';
+      document.getElementById('setting-sn-portal').value    = s.simplenexus_portal_url || '';
+      document.getElementById('setting-uw-email').value     = s.default_underwriter_email || '';
+      document.getElementById('setting-sender-name').value  = s.sender_name || '';
+      document.getElementById('setting-twilio-phone').value = s.twilio_phone_number || '';
+    }
+  },
+  async save() {
+    const form = document.getElementById('form-settings');
+    const data = Object.fromEntries(new FormData(form));
+    App.ui.setLoading('btn-save-settings', true);
+    try {
+      const res = await App.api.post('/api/settings', data);
+      if (res?.message) App.ui.toast('Settings saved!', 'success');
+      else App.ui.toast(res?.error||'Save failed', 'error');
+    } catch { App.ui.toast('Error saving settings', 'error'); }
+    App.ui.setLoading('btn-save-settings', false);
+  },
+};
 
 // Nav click handlers
 document.querySelectorAll('[data-page]').forEach(btn => {
