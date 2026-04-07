@@ -88,15 +88,14 @@ export async function onRequestPost(context) {
 
     // Add a sample email log entry
     await env.DB.prepare(`
-      INSERT INTO email_log (id, loan_id, to_email, to_name, subject, html, text, sent_at, status, template)
+      INSERT INTO email_log (id, loan_id, to_email, to_name, subject, body, template, sent_at, sent_by, status)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
       nanoid(), loanId,
       'mjohnson@email.com', 'Michael Johnson',
       'Welcome — Johnson Loan File Opened',
-      '<p>Welcome to Clearpath Processor!</p>',
-      'Welcome to Clearpath Processor!',
-      now, 'sent', 'welcome'
+      '<p>Welcome to Clearpath Processor! Your loan file is now open.</p>',
+      'welcome', now, user.sub, 'sent'
     ).run();
 
     const loan = await env.DB.prepare('SELECT * FROM loans WHERE id = ?').bind(loanId).first();
