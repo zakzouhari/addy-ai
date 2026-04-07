@@ -2,6 +2,7 @@
 // PUT    /api/loans/:id — update loan
 // DELETE /api/loans/:id — delete loan (admin only)
 import { ok, badRequest, forbidden, notFound, serverError, parseBody } from '../_lib/response.js';
+import { getStorage } from '../_lib/storage.js';
 
 export async function onRequestGet(context) {
   const { env, params } = context;
@@ -91,8 +92,9 @@ export async function onRequestDelete(context) {
       'SELECT r2_key FROM documents WHERE loan_id = ?'
     ).bind(params.id).all();
 
+    const storage = getStorage(env);
     for (const doc of docs) {
-      await env.DOCUMENTS.delete(doc.r2_key).catch(() => {});
+      await storage.delete(doc.r2_key).catch(() => {});
     }
 
     // Cascade delete handled by DB foreign keys (ON DELETE CASCADE)

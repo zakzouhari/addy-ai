@@ -1,5 +1,6 @@
 // POST /api/documents/:id/analyze — run Claude AI analysis on a document
 import { ok, notFound, serverError } from '../../_lib/response.js';
+import { getStorage } from '../../_lib/storage.js';
 
 const SYSTEM_PROMPT = `You are a mortgage loan processing expert. Analyze the provided document and extract all relevant information.
 
@@ -35,8 +36,8 @@ export async function onRequestPost(context) {
     ).bind(params.id).first();
     if (!doc) return notFound('Document not found');
 
-    // Fetch from R2
-    const obj = await env.DOCUMENTS.get(doc.r2_key);
+    // Fetch from storage (R2 or KV fallback)
+    const obj = await getStorage(env).get(doc.r2_key);
     if (!obj) return notFound('Document file not found in storage');
 
     const fileType = (doc.file_type || '').toLowerCase();

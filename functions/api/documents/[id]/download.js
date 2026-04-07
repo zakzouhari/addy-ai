@@ -1,5 +1,6 @@
-// GET /api/documents/:id/download — stream document from R2
+// GET /api/documents/:id/download — stream document from storage
 import { notFound, serverError } from '../../_lib/response.js';
+import { getStorage } from '../../_lib/storage.js';
 
 export async function onRequestGet(context) {
   const { env, params } = context;
@@ -9,7 +10,7 @@ export async function onRequestGet(context) {
     ).bind(params.id).first();
     if (!doc) return notFound('Document not found');
 
-    const obj = await env.DOCUMENTS.get(doc.r2_key);
+    const obj = await getStorage(env).get(doc.r2_key);
     if (!obj) return notFound('File not found in storage');
 
     const headers = new Headers();
@@ -33,7 +34,7 @@ export async function onRequestDelete(context) {
     ).bind(params.id).first();
     if (!doc) return notFound('Document not found');
 
-    await env.DOCUMENTS.delete(doc.r2_key).catch(() => {});
+    await getStorage(env).delete(doc.r2_key).catch(() => {});
     await env.DB.prepare('DELETE FROM documents WHERE id = ?').bind(params.id).run();
     await env.DB.prepare('UPDATE loans SET updated_at = ? WHERE id = ?')
       .bind(new Date().toISOString(), doc.loan_id).run();

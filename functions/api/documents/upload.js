@@ -1,6 +1,7 @@
 // POST /api/documents/upload  (multipart/form-data: loanId, category, file)
 import { nanoid } from '../_lib/auth.js';
 import { ok, created, badRequest, notFound, serverError } from '../_lib/response.js';
+import { getStorage } from '../_lib/storage.js';
 
 const MAX_FILE_SIZE = 25 * 1024 * 1024; // 25 MB
 
@@ -36,10 +37,11 @@ export async function onRequestPost(context) {
   const now      = new Date().toISOString();
 
   try {
-    const bytes = await file.arrayBuffer();
+    const bytes   = await file.arrayBuffer();
+    const storage = getStorage(env);
 
-    // Store in R2
-    await env.DOCUMENTS.put(safeKey, bytes, {
+    // Store in R2 (or KV fallback)
+    await storage.put(safeKey, bytes, {
       httpMetadata: { contentType: file.type || 'application/octet-stream' },
       customMetadata: { uploadedBy: user.sub, loanId, docId },
     });
@@ -67,8 +69,8 @@ export async function onRequestPost(context) {
     });
   } catch (err) {
     console.error('Upload error:', err);
-    // Try to clean up R2 if DB failed
-    await env.DOCUMENTS.delete(safeKey).catch(() => {});
+    // Try to clean up storage if DB failed
+    await getStorage(env).delete(safeKey).catch(() => {});
     return serverError('Upload failed');
   }
 }
