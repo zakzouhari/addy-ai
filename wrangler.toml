@@ -5,15 +5,16 @@ pages_build_output_dir = "public"
 [[d1_databases]]
 binding = "DB"
 database_name = "addy-ai-db"
-database_id = "YOUR_D1_DATABASE_ID"
+database_id = "a5b9de7d-3e95-4436-ab0c-d5a4adc42a70"
 
-[[r2_buckets]]
-binding = "DOCUMENTS"
-bucket_name = "addy-ai-documents"
+# R2 bucket (enable via Cloudflare dashboard when R2 is activated)
+# [[r2_buckets]]
+# binding = "DOCUMENTS"
+# bucket_name = "addy-ai-documents"
 
 [[kv_namespaces]]
 binding = "KV"
-id = "YOUR_KV_NAMESPACE_ID"
+id = "724ea316047e491997650adbfb1edee9"
 
 [vars]
 FROM_EMAIL = "zzouhari@rmchomemortgage.com"
