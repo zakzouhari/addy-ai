@@ -1143,6 +1143,9 @@ const App = {
         <button class="btn btn-secondary btn-sm" onclick="App.pages.loanDetail.runAiAnalysis()" id="btn-ai-analyze">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
           AI Analyze</button>
+        <button class="btn btn-secondary btn-sm" onclick="App.pages.loanDetail.runAiUnderwrite()" id="btn-ai-underwrite" style="border-color:var(--purple);color:var(--purple);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          AI Underwrite</button>
         <button class="btn btn-secondary btn-sm" onclick="App.ui.showModal('modal-send-reminder')">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.65 3.32 2 2 0 0 1 3.62 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.5 16z"/></svg>
           Send Reminder</button>
@@ -1488,6 +1491,7 @@ const App = {
       _docs: [],
       _items: [],
       _emails: [],
+      _assessment: null,
       _activeTab: 'documents',
 
       async load(id) {
@@ -1501,10 +1505,11 @@ const App = {
           return;
         }
 
-        this._loan   = data.loan;
-        this._docs   = data.documents || [];
-        this._items  = data.missing_items || [];
-        this._emails = data.emails || [];
+        this._loan       = data.loan;
+        this._docs       = data.documents || [];
+        this._items      = data.missing_items || [];
+        this._emails     = data.emails || [];
+        this._assessment = data.latest_assessment || null;
 
         // Update page title
         document.getElementById('page-title').textContent = data.loan.borrower_name;
@@ -1558,6 +1563,27 @@ const App = {
             <p style="margin-top:6px;font-size:13px;color:var(--gray-700);white-space:pre-line;">${l.notes}</p>
           </div>
         </div>` : ''}
+
+        <!-- AI Underwriter Assessment -->
+        <div id="ai-assessment-card" class="card detail-full" style="${l.completeness_score ? '' : 'display:none'}">
+          <div class="card-header" style="justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:36px;height:36px;border-radius:8px;background:var(--purple-bg);display:flex;align-items:center;justify-content:center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+              </div>
+              <span class="card-title">AI Underwriter Assessment</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              ${l.last_analyzed_at ? `<span style="font-size:11px;color:var(--gray-400);">Last run ${App.ui.fmt.date(l.last_analyzed_at)}</span>` : ''}
+              <button class="btn btn-sm btn-secondary" style="border-color:var(--purple);color:var(--purple);" onclick="App.pages.loanDetail.runAiUnderwrite()">
+                Re-run
+              </button>
+            </div>
+          </div>
+          <div class="card-body" id="ai-assessment-body">
+            ${this.renderAssessment()}
+          </div>
+        </div>
 
         <!-- Tabbed section -->
         <div class="card detail-full">
@@ -1716,6 +1742,106 @@ const App = {
               ${e.status === 'failed' ? '<span style="color:var(--danger);font-weight:600;"> &bull; Failed</span>' : '<span style="color:var(--success);"> &bull; Sent</span>'}
             </div>
           </div>`).join('');
+      },
+
+      renderAssessment() {
+        const a = this._assessment;
+        if (!a) return '<div class="empty-state" style="padding:20px 0;"><p style="color:var(--gray-400);font-size:13px;">No assessment yet. Click <strong>AI Underwrite</strong> to run the agentic underwriter brain.</p></div>';
+
+        const recColor = { ready_for_uw: 'var(--success)', needs_work: 'var(--warning)', major_issues: 'var(--danger)' }[a.recommendation] || 'var(--gray-500)';
+        const recLabel = { ready_for_uw: 'Ready for UW', needs_work: 'Needs Work', major_issues: 'Major Issues' }[a.recommendation] || a.recommendation;
+        const scoreColor = a.completeness_score >= 75 ? 'var(--success)' : a.completeness_score >= 50 ? 'var(--warning)' : 'var(--danger)';
+        const calcs = a.calculations || {};
+
+        const fmtPct = v => v != null ? (v * 100).toFixed(1) + '%' : '—';
+        const fmtNum = v => v != null ? Number(v).toFixed(1) : '—';
+
+        const criticalItems = (a.missing_items || []).filter(i => i.priority === 'critical');
+        const standardItems = (a.missing_items || []).filter(i => i.priority === 'standard');
+        const niceItems     = (a.missing_items || []).filter(i => i.priority === 'nice_to_have');
+
+        const renderMissingGroup = (items, label, color) => {
+          if (!items.length) return '';
+          return `<div style="margin-bottom:12px;">
+            <p style="font-size:11px;font-weight:600;text-transform:uppercase;color:${color};letter-spacing:.05em;margin-bottom:6px;">${label} (${items.length})</p>
+            ${items.map(i => `<div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--gray-100);">
+              <span style="width:8px;height:8px;border-radius:50%;background:${color};flex-shrink:0;margin-top:4px;"></span>
+              <div style="flex:1;">
+                <div style="font-size:13px;font-weight:500;color:var(--gray-800);">${i.name}</div>
+                <div style="font-size:11px;color:var(--gray-500);margin-top:2px;">${i.reason || ''}</div>
+                ${i.action ? `<div style="font-size:11px;color:var(--primary);margin-top:2px;">→ ${i.action}</div>` : ''}
+              </div>
+              <span style="font-size:10px;color:var(--gray-400);background:var(--gray-100);padding:1px 6px;border-radius:4px;white-space:nowrap;">${i.category || ''}</span>
+            </div>`).join('')}
+          </div>`;
+        };
+
+        return `
+        <!-- Score + Recommendation header -->
+        <div style="display:flex;align-items:center;gap:20px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--gray-200);">
+          <div style="text-align:center;flex-shrink:0;">
+            <div style="font-size:40px;font-weight:700;color:${scoreColor};line-height:1;">${a.completeness_score}</div>
+            <div style="font-size:11px;color:var(--gray-500);margin-top:2px;">Completeness</div>
+          </div>
+          <div style="flex:1;">
+            <span style="display:inline-block;background:${recColor}20;color:${recColor};border:1px solid ${recColor}40;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">${recLabel}</span>
+            <p style="font-size:13px;color:var(--gray-700);line-height:1.6;">${a.summary || ''}</p>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;flex-shrink:0;min-width:180px;">
+            <div style="background:var(--gray-50);border-radius:8px;padding:8px 12px;text-align:center;">
+              <div style="font-size:18px;font-weight:700;color:var(--gray-800);">${fmtPct(calcs.dti)}</div>
+              <div style="font-size:10px;color:var(--gray-500);">Back-End DTI</div>
+            </div>
+            <div style="background:var(--gray-50);border-radius:8px;padding:8px 12px;text-align:center;">
+              <div style="font-size:18px;font-weight:700;color:var(--gray-800);">${fmtPct(calcs.ltv)}</div>
+              <div style="font-size:10px;color:var(--gray-500);">LTV</div>
+            </div>
+            <div style="background:var(--gray-50);border-radius:8px;padding:8px 12px;text-align:center;">
+              <div style="font-size:18px;font-weight:700;color:var(--gray-800);">${fmtPct(calcs.front_end_ratio)}</div>
+              <div style="font-size:10px;color:var(--gray-500);">Front-End</div>
+            </div>
+            <div style="background:var(--gray-50);border-radius:8px;padding:8px 12px;text-align:center;">
+              <div style="font-size:18px;font-weight:700;color:var(--gray-800);">${fmtNum(calcs.reserves_months)} mo</div>
+              <div style="font-size:10px;color:var(--gray-500);">Reserves</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Strengths + Concerns -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+          <div>
+            <p style="font-size:12px;font-weight:600;color:var(--success);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Strengths (${(a.strengths||[]).length})</p>
+            ${(a.strengths||[]).length ? (a.strengths||[]).map(s => `<div style="display:flex;align-items:flex-start;gap:8px;padding:5px 0;font-size:13px;color:var(--gray-700);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.5" style="flex-shrink:0;margin-top:1px;"><polyline points="20 6 9 17 4 12"/></svg>${s}
+            </div>`).join('') : '<p style="font-size:12px;color:var(--gray-400);">None identified</p>'}
+          </div>
+          <div>
+            <p style="font-size:12px;font-weight:600;color:var(--danger);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Concerns (${(a.concerns||[]).length})</p>
+            ${(a.concerns||[]).length ? (a.concerns||[]).map(c => `<div style="display:flex;align-items:flex-start;gap:8px;padding:5px 0;font-size:13px;color:var(--gray-700);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>${c}
+            </div>`).join('') : '<p style="font-size:12px;color:var(--gray-400);">None identified</p>'}
+          </div>
+        </div>
+
+        <!-- Missing Items by Priority -->
+        ${criticalItems.length || standardItems.length || niceItems.length ? `
+        <div style="margin-bottom:20px;">
+          <p style="font-size:12px;font-weight:600;color:var(--gray-600);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">Missing Items (${(a.missing_items||[]).length})</p>
+          ${renderMissingGroup(criticalItems, 'Critical', 'var(--danger)')}
+          ${renderMissingGroup(standardItems, 'Standard', 'var(--warning)')}
+          ${renderMissingGroup(niceItems,     'Nice to Have', 'var(--gray-400)')}
+        </div>` : ''}
+
+        <!-- Next Steps -->
+        ${(a.next_steps||[]).length ? `
+        <div style="background:var(--primary-light);border-radius:8px;padding:14px 16px;">
+          <p style="font-size:12px;font-weight:600;color:var(--primary-dark);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Next Steps</p>
+          ${(a.next_steps||[]).map((s,i) => `<div style="display:flex;align-items:flex-start;gap:10px;padding:4px 0;font-size:13px;color:var(--gray-700);">
+            <span style="font-size:11px;font-weight:700;color:var(--primary);flex-shrink:0;margin-top:1px;">${i+1}.</span>${s}
+          </div>`).join('')}
+        </div>` : ''}
+
+        <div style="margin-top:12px;font-size:11px;color:var(--gray-400);">Model: ${a.model || 'claude'} &bull; Run: ${a.created_at ? App.ui.fmt.dateTime(a.created_at) : 'unknown'}</div>`;
       },
 
       switchTab(tab, btn) {
@@ -2198,6 +2324,65 @@ App.pages.loanDetail.runAiAnalysis = async function() {
     }
   } catch (e) {
     document.getElementById('modal-loan-analysis-body').innerHTML = `<p style="color:var(--danger);">Analysis request failed. Check API key configuration.</p>`;
+  }
+};
+
+// ── AI Underwriter Brain ─────────────────────────────────────────────────
+App.pages.loanDetail.runAiUnderwrite = async function() {
+  const btn = document.getElementById('btn-ai-underwrite');
+  if (btn) { btn.disabled = true; btn.textContent = 'Running…'; }
+
+  const assessCard = document.getElementById('ai-assessment-card');
+  const assessBody = document.getElementById('ai-assessment-body');
+  if (assessCard) assessCard.style.display = '';
+  if (assessBody) assessBody.innerHTML = `
+    <div style="text-align:center;padding:24px;">
+      <div class="spinner-dark"></div>
+      <p style="margin-top:12px;color:var(--gray-500);">Running agentic underwriter brain…<br>
+      <span style="font-size:11px;">Reviewing loan profile, documents, and extracted data</span></p>
+    </div>`;
+
+  try {
+    const res = await App.api.post(`/api/loans/${App.state.currentLoanId}/underwrite`);
+
+    if (res?.assessment) {
+      App.pages.loanDetail._assessment = res.assessment;
+      // Update the loan object with new score/ratios
+      if (App.pages.loanDetail._loan) {
+        App.pages.loanDetail._loan.completeness_score = res.assessment.completeness_score;
+        App.pages.loanDetail._loan.last_analyzed_at   = res.assessment.created_at;
+        if (res.assessment.calculations?.dti) App.pages.loanDetail._loan.dti = res.assessment.calculations.dti;
+        if (res.assessment.calculations?.ltv) App.pages.loanDetail._loan.ltv = res.assessment.calculations.ltv;
+      }
+      if (assessBody) assessBody.innerHTML = App.pages.loanDetail.renderAssessment();
+
+      const cached = res.cached ? ' (cached)' : '';
+      const tokens = res.tokens ? ` · ${res.tokens.input + res.tokens.output} tokens` : '';
+      App.ui.toast(`Underwrite complete — score ${res.assessment.completeness_score}%${cached}${tokens}`, 'success');
+
+      // Refresh missing items list in background
+      const data = await App.api.get(`/api/loans/${App.state.currentLoanId}`).catch(() => null);
+      if (data) {
+        App.pages.loanDetail._items = data.missing_items || [];
+        const itemsEl = document.getElementById('items-list');
+        if (itemsEl) itemsEl.innerHTML = App.pages.loanDetail.renderItems();
+      }
+    } else if (res?.error === 'rate_limited') {
+      if (assessBody) assessBody.innerHTML = `
+        <div style="background:var(--warning-bg);border:1px solid var(--warning);border-radius:8px;padding:16px;">
+          <strong style="color:var(--warning);">Rate Limited</strong>
+          <p style="font-size:13px;color:var(--gray-700);margin-top:6px;">${res.message}</p>
+        </div>`;
+      App.ui.toast('Rate limited — please wait 60s and retry', 'error');
+    } else {
+      if (assessBody) assessBody.innerHTML = `<p style="color:var(--danger);padding:16px;">${res?.error || 'Underwrite failed — check ANTHROPIC_API_KEY binding'}</p>`;
+      App.ui.toast(res?.error || 'Underwrite failed', 'error');
+    }
+  } catch (e) {
+    if (assessBody) assessBody.innerHTML = `<p style="color:var(--danger);padding:16px;">Network error: ${e.message}</p>`;
+    App.ui.toast('Underwrite request failed', 'error');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'AI Underwrite'; }
   }
 };
 

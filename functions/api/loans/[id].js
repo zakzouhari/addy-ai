@@ -16,7 +16,7 @@ export async function onRequestGet(context) {
     `).bind(params.id).first();
     if (!loan) return notFound('Loan not found');
 
-    const [docs, items, emails] = await Promise.all([
+    const [docs, items, emails, assessments] = await Promise.all([
       env.DB.prepare(
         'SELECT id, original_name, file_type, file_size, doc_category, uploaded_at, analyzed, analysis FROM documents WHERE loan_id = ? ORDER BY uploaded_at DESC'
       ).bind(params.id).all(),
@@ -26,13 +26,38 @@ export async function onRequestGet(context) {
       env.DB.prepare(
         'SELECT id, to_email, to_name, subject, sent_at, status, template FROM email_log WHERE loan_id = ? ORDER BY sent_at DESC'
       ).bind(params.id).all(),
+      env.DB.prepare(
+        'SELECT * FROM underwriter_assessments WHERE loan_id = ? ORDER BY created_at DESC LIMIT 1'
+      ).bind(params.id).all(),
     ]);
+
+    // Parse JSON fields in latest assessment
+    let latestAssessment = null;
+    if (assessments.results.length > 0) {
+      const row = assessments.results[0];
+      const tryParse = (s, fb) => { try { return JSON.parse(s); } catch { return fb; } };
+      latestAssessment = {
+        id:                 row.id,
+        loan_id:            row.loan_id,
+        model:              row.model,
+        completeness_score: row.completeness_score,
+        recommendation:     row.recommendation,
+        summary:            row.summary,
+        strengths:          tryParse(row.strengths,    []),
+        concerns:           tryParse(row.concerns,     []),
+        missing_items:      tryParse(row.missing_items,[]),
+        calculations:       tryParse(row.calculations, {}),
+        next_steps:         tryParse(row.next_steps,   []),
+        created_at:         row.created_at,
+      };
+    }
 
     return ok({
       loan,
-      documents:     docs.results,
-      missing_items: items.results,
-      emails:        emails.results,
+      documents:          docs.results,
+      missing_items:      items.results,
+      emails:             emails.results,
+      latest_assessment:  latestAssessment,
     });
   } catch (err) {
     console.error('Get loan error:', err);
