@@ -1363,6 +1363,7 @@ const App = {
             <td class="text-sm text-muted">${App.ui.fmt.date(l.updated_at)}</td>
           </tr>`).join('')}
           </tbody></table>`;
+      },
       async createSampleLoan() {
         const btn = document.getElementById('btn-create-sample');
         if (btn) { btn._orig = btn.innerHTML; btn.innerHTML = '<span class="spinner"></span>'; btn.disabled = true; }
