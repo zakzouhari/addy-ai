@@ -76,20 +76,20 @@ export async function onRequestPost(context) {
       return badRequest('Simple Nexus intake email not configured. Set it in Settings or provide simplenexus_email in the request body.');
     }
     toName       = 'Simple Nexus';
-    subjectPrefix = `[Loan #${loanNumber}] Submission:`;
+    subjectPrefix = `[Loan #${loanNumber}] Submission |`;
   } else {
     toEmail = body.underwriter_email || await getKvSetting(env, 'default_underwriter_email');
     if (!toEmail) {
       return badRequest('Underwriter email not provided. Provide underwriter_email in the request body or configure it in Settings.');
     }
     toName       = 'Underwriting Department';
-    subjectPrefix = `[UW Submission — Loan #${loanNumber}]`;
+    subjectPrefix = `[UW Submission | Loan #${loanNumber}]`;
   }
 
   const fromEmail = env.FROM_EMAIL  || 'zzouhari@rmchomemortgage.com';
-  const fromName  = env.SENDER_NAME || 'Clearpath Processor';
+  const fromName  = env.SENDER_NAME || 'Zak Zouhari | RMC Home Mortgage';
 
-  const subject = `${subjectPrefix} ${loan.borrower_name} — ${loan.loan_type || ''} ${loan.loan_purpose || ''}`.trim();
+  const subject = `${subjectPrefix} ${loan.borrower_name} | ${loan.loan_type || ''} ${loan.loan_purpose || ''}`.trim();
 
   const coverLetterSection = body.cover_letter_html
     ? `<div style="border:1px solid #E2E8F0;border-radius:8px;padding:20px;margin-bottom:20px;">${body.cover_letter_html}</div>`
@@ -105,7 +105,7 @@ export async function onRequestPost(context) {
 <div style="font-family:Arial,sans-serif;max-width:700px;padding:20px;color:#1E293B;">
   <div style="background:#1E4976;color:#fff;padding:16px 20px;border-radius:8px;margin-bottom:20px;">
     <h2 style="margin:0;font-size:18px;">Underwriter Submission Package</h2>
-    <p style="margin:4px 0 0;font-size:13px;opacity:.85;">Clearpath Processor — Clearpath Automation, LLC</p>
+    <p style="margin:4px 0 0;font-size:13px;opacity:.85;">RMC Home Mortgage | NMLS #2116211</p>
   </div>
 
   <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">

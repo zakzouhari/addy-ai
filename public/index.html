@@ -654,7 +654,7 @@ tbody tr:hover { background: var(--gray-50); }
             </div>
             <div class="form-group">
               <label class="form-label">Sender Name <span style="color:var(--gray-400);font-weight:400;">(appears in outgoing emails)</span></label>
-              <input class="form-control" name="sender_name" placeholder="Zak Zouhari — Clearpath Processor" id="setting-sender-name">
+              <input class="form-control" name="sender_name" placeholder="Zak Zouhari | RMC Home Mortgage" id="setting-sender-name">
             </div>
             <div class="form-group">
               <label class="form-label">Twilio Phone Number <span style="color:var(--gray-400);font-weight:400;">(for SMS outreach)</span></label>
@@ -858,7 +858,7 @@ tbody tr:hover { background: var(--gray-50); }
         <label class="form-label">Message *</label>
         <textarea class="form-control" id="email-body" style="min-height:200px;" required></textarea>
       </div>
-      <p style="font-size:11px;color:var(--gray-400);">Sent from: Clearpath Processor &lt;zzouhari@rmchomemortgage.com&gt;</p>
+      <p style="font-size:11px;color:var(--gray-400);">Sent from: Zak Zouhari | RMC Home Mortgage &lt;zzouhari@rmchomemortgage.com&gt;</p>
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="App.ui.hideModal('modal-send-email')">Cancel</button>
@@ -2005,20 +2005,20 @@ const App = {
 
         const templates = {
           missing_items: {
-            subject: `Action Required: Missing Documents — ${l.borrower_name} Loan File`,
-            body: `Dear ${name},\n\nThank you for choosing Clearpath Automation. We are still missing the following documents needed to process your loan:\n\n${pending.map(i => `  • ${i}`).join('\n') || '  (see your loan processor for details)'}\n\nTo submit your documents, please use your secure borrower portal:\n  ${App.state._snPortalUrl ? App.state._snPortalUrl.replace('{loan_number}', l.extracted_data?.loan_number || '') : '(your processor will send you a portal link)'}\n\nPlease provide these items at your earliest convenience so we can move forward with your application.\n\nBest regards,\nYour Clearpath Processor Team\nzzouhari@rmchomemortgage.com`,
+            subject: `Action Required: Missing Documents for ${l.borrower_name}`,
+            body: `Hey ${name},\n\nQuick update on your loan. We still need a few documents to keep things moving.\n\nItems still needed:\n${pending.map(i => `  \u2022 ${i}`).join('\n') || '  (call or text me for details)'}\n\nYou can upload documents through your borrower portal:\n  ${App.state._snPortalUrl ? App.state._snPortalUrl.replace('{loan_number}', l.extracted_data?.loan_number || '') : '(I\'ll send you a portal link)'}\n\nWhen you get a chance, send these over so we can keep your file on track. Let me know if you have questions about any of these.\n\nThanks,\nZak Zouhari\nMortgage Loan Originator | NMLS #1264079\nRMC Home Mortgage | NMLS #2116211\n(407) 388-5737 (Cell) | (877) 478-7369 (Office)\nzzouhari@rmchomemortgage.com`,
           },
           status_update: {
-            subject: `Loan Status Update — ${l.borrower_name}`,
-            body: `Dear ${name},\n\nI wanted to provide you with a quick update on your loan application.\n\nCurrent Status: ${l.status.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}\nProperty: ${l.property_address || 'As discussed'}\nLoan Amount: ${App.ui.fmt.currency(l.loan_amount)}\n\nWe are making great progress on your file. I will continue to keep you informed as things move forward.\n\nBest regards,\nYour Clearpath Processor Team\nzzouhari@rmchomemortgage.com`,
+            subject: `Loan Status Update for ${l.borrower_name}`,
+            body: `Hey ${name},\n\nJust wanted to give you a quick status update on your loan.\n\nCurrent Status: ${l.status.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}\nProperty: ${l.property_address || 'As discussed'}\nLoan Amount: ${App.ui.fmt.currency(l.loan_amount)}\n\nWe're making solid progress on your file. I'll keep you posted as things move along.\n\nThanks,\nZak Zouhari\nMortgage Loan Originator | NMLS #1264079\nRMC Home Mortgage | NMLS #2116211\n(407) 388-5737 (Cell) | (877) 478-7369 (Office)\nzzouhari@rmchomemortgage.com`,
           },
           welcome: {
-            subject: `Welcome — ${l.borrower_name} Loan File Opened`,
-            body: `Dear ${name},\n\nWelcome! We're excited to work with you on your mortgage journey.\n\nHere's what to expect next:\n\n1. Document Collection — We'll need a few items from you to get started\n2. Processing — Our team will review everything carefully\n3. Underwriting — Your file will be evaluated by our underwriting team\n4. Clear to Close — You'll receive final approval and closing instructions\n5. Closing — Sign the paperwork and get your keys!\n\nYou can upload documents directly to your borrower portal:\n  ${App.state._snPortalUrl ? App.state._snPortalUrl.replace('{loan_number}', l.extracted_data?.loan_number || '') : '(your processor will send you a portal link)'}\n\nLooking forward to working with you!\n\nBest regards,\nYour Clearpath Processor Team\nzzouhari@rmchomemortgage.com`,
+            subject: `Welcome, ${name}! Your Loan File Is Open`,
+            body: `Hey ${name},\n\nGreat to have you on board! We're excited to help you with your mortgage.\n\nHere's what to expect:\n\n1. Document Collection: We'll need a few items from you to get started\n2. Processing: My team will review everything carefully\n3. Underwriting: Your file will go through our underwriting team\n4. Clear to Close: You'll receive final approval and closing instructions\n5. Closing: Sign the paperwork and get your keys!\n\nYou can upload documents through your borrower portal:\n  ${App.state._snPortalUrl ? App.state._snPortalUrl.replace('{loan_number}', l.extracted_data?.loan_number || '') : '(I\'ll send you a portal link)'}\n\nReally looking forward to working with you!\n\nThanks,\nZak Zouhari\nMortgage Loan Originator | NMLS #1264079\nRMC Home Mortgage | NMLS #2116211\n(407) 388-5737 (Cell) | (877) 478-7369 (Office)\nzzouhari@rmchomemortgage.com`,
           },
           clear_to_close: {
-            subject: `Clear to Close! — ${l.borrower_name}`,
-            body: `Dear ${name},\n\nCongratulations! Your loan has been approved and you are CLEAR TO CLOSE!\n\nHere's what happens next:\n\n• Our closing team will reach out to schedule your closing date\n• Please bring a valid government-issued photo ID to closing\n• Funds for closing costs should be in a certified/cashier's check or wire transfer\n• You will receive your final Closing Disclosure at least 3 business days before closing\n\nThis is an exciting milestone and we couldn't be happier to help make your homeownership dream a reality!\n\nCongratulations again!\n\nYour Clearpath Processor Team\nzzouhari@rmchomemortgage.com`,
+            subject: `Clear to Close: ${l.borrower_name}`,
+            body: `Hey ${name},\n\nYou're CLEAR TO CLOSE!\n\nHere's what happens next:\n\n\u2022 My team will reach out to schedule your closing date\n\u2022 Bring a valid government issued photo ID to closing\n\u2022 Closing costs should be in a certified check or wire transfer\n\u2022 You'll receive your final Closing Disclosure at least 3 business days before closing\n\nThis is a huge milestone! We're so excited to help make this happen for you.\n\nThanks,\nZak Zouhari\nMortgage Loan Originator | NMLS #1264079\nRMC Home Mortgage | NMLS #2116211\n(407) 388-5737 (Cell) | (877) 478-7369 (Office)\nzzouhari@rmchomemortgage.com`,
           },
           custom: { subject: '', body: '' },
         };
