@@ -1,6 +1,7 @@
 // POST /api/documents/:id/analyze — run Claude AI analysis on a document
 import { ok, notFound, serverError } from '../../_lib/response.js';
 import { getStorage } from '../../_lib/storage.js';
+import { nanoid } from '../../_lib/auth.js';
 
 const SYSTEM_PROMPT = `You are a mortgage loan processing expert. Analyze the provided document and extract all relevant information.
 
@@ -127,7 +128,6 @@ export async function onRequestPost(context) {
     if (Array.isArray(analysis.missing_items) && analysis.missing_items.length > 0) {
       for (const item of analysis.missing_items) {
         if (typeof item === 'string' && item.trim()) {
-          const { nanoid } = await import('../../_lib/auth.js');
           await env.DB.prepare(
             'INSERT OR IGNORE INTO missing_items (id, loan_id, item, status, source, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
           ).bind(nanoid(), doc.loan_id, item.trim(), 'pending', 'ai', now, now).run();

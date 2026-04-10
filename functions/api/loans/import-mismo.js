@@ -1,8 +1,9 @@
 // POST /api/loans/import-mismo  (multipart/form-data: file)
-// Parses a MISMO 3.x XML file, creates a loan record + stores the XML in R2
+// Parses a MISMO 3.x XML file, creates a loan record + stores the XML in R2 (or KV fallback)
 import { nanoid } from '../_lib/auth.js';
 import { ok, created, badRequest, serverError } from '../_lib/response.js';
 import { auditLog } from '../_lib/audit.js';
+import { getStorage } from '../_lib/storage.js';
 
 const MAX_FILE_SIZE = 25 * 1024 * 1024;
 
@@ -42,9 +43,10 @@ export async function onRequestPost(context) {
   const safeKey = `loans/${loanId}/${docId}/${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
 
   try {
-    // Store raw MISMO in R2
-    const bytes = await file.arrayBuffer();
-    await env.DOCUMENTS.put(safeKey, bytes, {
+    // Store raw MISMO in R2 (or KV fallback)
+    const bytes   = await file.arrayBuffer();
+    const storage = getStorage(env);
+    await storage.put(safeKey, bytes, {
       httpMetadata: { contentType: 'application/xml' },
       customMetadata: { uploadedBy: user.sub, loanId, docId, type: 'MISMO' },
     });
@@ -102,8 +104,8 @@ export async function onRequestPost(context) {
 
   } catch (err) {
     console.error('MISMO import error:', err);
-    // Clean up R2 on failure
-    await env.DOCUMENTS.delete(safeKey).catch(() => {});
+    // Clean up storage on failure
+    await getStorage(env).delete(safeKey).catch(() => {});
     return serverError('MISMO import failed: ' + err.message);
   }
 }

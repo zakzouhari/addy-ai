@@ -387,17 +387,93 @@ tbody tr:hover { background: var(--gray-50); }
 .tab-pane { display: none; }
 .tab-pane.active { display: block; }
 
+/* ─── Loan Detail Header ────────────────────────────────────────── */
+.loan-hero {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+  border-radius: 12px; padding: 24px; margin-bottom: 20px; color: #fff;
+  display: flex; align-items: flex-start; gap: 20px;
+}
+.loan-hero-info { flex: 1; min-width: 0; }
+.loan-hero h2 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+.loan-hero-sub { font-size: 13px; opacity: .8; margin-bottom: 12px; }
+.loan-hero-meta { display: flex; flex-wrap: wrap; gap: 12px; }
+.loan-hero-chip { background: rgba(255,255,255,.18); border-radius: 6px; padding: 4px 10px; font-size: 12px; font-weight: 500; }
+.completeness-ring { flex-shrink: 0; text-align: center; }
+.completeness-ring svg { display: block; }
+.completeness-ring .ring-label { font-size: 10px; opacity: .75; margin-top: 2px; }
+
+/* ─── AI Assessment Panel ───────────────────────────────────────── */
+.ai-panel { border: 1px solid var(--gray-200); border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+.ai-panel-header { background: linear-gradient(90deg, var(--primary-dark), var(--primary)); color: #fff; padding: 14px 18px; display: flex; align-items: center; gap: 10px; }
+.ai-panel-header h3 { font-size: 14px; font-weight: 600; }
+.ai-panel-header .ai-ts { font-size: 11px; opacity: .75; margin-left: auto; }
+.ai-panel-body { padding: 18px; background: var(--white); }
+.ai-score-row { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--gray-100); }
+.ai-score-circle {
+  width: 72px; height: 72px; border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; flex-shrink: 0; font-size: 20px; font-weight: 700; color: #fff;
+}
+.ai-score-circle.high { background: var(--success); }
+.ai-score-circle.mid  { background: var(--warning); }
+.ai-score-circle.low  { background: var(--danger); }
+.ai-rec-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; margin-bottom: 6px; }
+.ai-rec-badge.ready  { background: var(--success-bg); color: var(--success); }
+.ai-rec-badge.needs  { background: var(--warning-bg); color: var(--warning); }
+.ai-rec-badge.issues { background: var(--danger-bg); color: var(--danger); }
+.ai-assessment-text { font-size: 13px; color: var(--gray-700); line-height: 1.6; background: var(--gray-50); padding: 12px; border-radius: 8px; margin-bottom: 14px; }
+.ai-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.ai-col-title { font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--gray-500); letter-spacing: .05em; margin-bottom: 8px; }
+.ai-strength { font-size: 12px; color: var(--success); padding: 3px 0; display: flex; gap: 6px; }
+.ai-flag     { font-size: 12px; color: var(--danger); padding: 3px 0; display: flex; gap: 6px; }
+.ai-calcs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
+.ai-calc-card { background: var(--gray-50); border-radius: 8px; padding: 10px; text-align: center; }
+.ai-calc-val { font-size: 18px; font-weight: 700; color: var(--gray-800); }
+.ai-calc-label { font-size: 10px; color: var(--gray-500); margin-top: 2px; }
+.ai-next-steps { counter-reset: steps; }
+.ai-step { display: flex; gap: 10px; padding: 6px 0; font-size: 12px; color: var(--gray-700); border-bottom: 1px solid var(--gray-100); }
+.ai-step:last-child { border-bottom: none; }
+.ai-step-num { width: 20px; height: 20px; border-radius: 50%; background: var(--primary-light); color: var(--primary); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ai-reanalyze { font-size: 11px; color: var(--gray-400); text-align: right; margin-top: 12px; display: flex; justify-content: flex-end; gap: 8px; align-items: center; }
+
+/* ─── Priority Groups ───────────────────────────────────────────── */
+.priority-group { border-radius: 8px; margin-bottom: 12px; overflow: hidden; }
+.priority-group-header { display: flex; align-items: center; gap: 8px; padding: 8px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.priority-group.critical .priority-group-header  { background: var(--danger-bg); color: var(--danger); border-left: 3px solid var(--danger); }
+.priority-group.normal .priority-group-header    { background: var(--warning-bg); color: var(--warning); border-left: 3px solid var(--warning); }
+.priority-group.nice .priority-group-header      { background: var(--success-bg); color: var(--success); border-left: 3px solid var(--success); }
+.priority-group.done-group .priority-group-header { background: var(--gray-100); color: var(--gray-500); border-left: 3px solid var(--gray-300); }
+.priority-group-items { border: 1px solid var(--gray-200); border-top: none; border-radius: 0 0 8px 8px; }
+
+/* ─── Rate Limit Banner ─────────────────────────────────────────── */
+.rate-limit-banner {
+  background: var(--warning-bg); border: 1px solid var(--warning); border-radius: 8px;
+  padding: 12px 16px; font-size: 13px; color: var(--warning); display: flex; gap: 10px;
+  align-items: flex-start; margin-bottom: 12px;
+}
+
+/* ─── Extracted Data Cards ──────────────────────────────────────── */
+.data-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+.data-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px; padding: 12px; }
+.data-card-val { font-size: 16px; font-weight: 700; color: var(--gray-800); margin-bottom: 2px; }
+.data-card-label { font-size: 11px; color: var(--gray-500); }
+
 /* ─── Responsive ────────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .detail-grid { grid-template-columns: 1fr; }
   .form-row    { grid-template-columns: 1fr; }
+  .ai-columns  { grid-template-columns: 1fr; }
+  .ai-calcs    { grid-template-columns: repeat(2, 1fr); }
+  .data-grid-3 { grid-template-columns: repeat(2, 1fr); }
+  .loan-hero   { flex-direction: column; }
 }
 @media (max-width: 640px) {
   :root { --sidebar-w: 0px; }
   #sidebar { display: none; }
   .page-content { padding: 16px; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
+  .ai-calcs { grid-template-columns: repeat(2, 1fr); }
+  .data-grid-3 { grid-template-columns: 1fr 1fr; }
 }
 </style>
 </head>
@@ -1518,39 +1594,62 @@ const App = {
         const itemsPending  = this._items.filter(i => i.status === 'pending').length;
         const itemsTotal    = this._items.length;
         const docsAnalyzed  = this._docs.filter(d => d.analyzed).length;
+        const extracted     = (() => { try { return l.extracted_data ? JSON.parse(l.extracted_data) : {}; } catch { return {}; } })();
+        const completeness  = l.completeness_score ?? null;
+        const pct           = completeness ?? 0;
+        const ringColor     = pct >= 75 ? '#16A34A' : pct >= 40 ? '#D97706' : '#DC2626';
+        // SVG ring math
+        const r = 28; const circ = 2 * Math.PI * r;
+        const dash = (pct / 100) * circ;
 
         document.getElementById('loan-detail-content').innerHTML = `
-        <!-- Top info cards -->
-        <div class="detail-grid">
-          <div class="card">
-            <div class="card-header" style="justify-content:space-between;">
-              <span class="card-title">Borrower Information</span>
-              <button class="btn btn-ghost btn-sm" onclick="App.pages.loanDetail.openEditModal()">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                Edit
+        <!-- Hero Header -->
+        <div class="loan-hero">
+          <div class="loan-hero-info">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+              ${App.ui.statusBadge(l.status)}
+              ${l.loan_type ? `<span style="background:rgba(255,255,255,.2);color:#fff;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;">${l.loan_type}</span>` : ''}
+              ${l.loan_purpose ? `<span style="background:rgba(255,255,255,.15);color:#fff;padding:2px 8px;border-radius:999px;font-size:11px;">${l.loan_purpose}</span>` : ''}
+            </div>
+            <h2 class="loan-hero-h2">${l.borrower_name}${l.co_borrower_name && l.co_borrower_name !== l.borrower_name ? ' <span style="font-weight:400;opacity:.8;font-size:16px;">& ' + l.co_borrower_name + '</span>' : ''}</h2>
+            <div class="loan-hero-sub">${l.property_address || 'No property address on file'}</div>
+            <div class="loan-hero-meta">
+              ${l.loan_amount ? `<span class="loan-hero-chip">${App.ui.fmt.currency(l.loan_amount)}</span>` : ''}
+              ${extracted.credit_score ? `<span class="loan-hero-chip">FICO ${extracted.credit_score}</span>` : ''}
+              ${extracted.ltv ? `<span class="loan-hero-chip">LTV ${typeof extracted.ltv === 'number' && extracted.ltv < 2 ? (extracted.ltv*100).toFixed(1)+'%' : extracted.ltv}</span>` : ''}
+              ${extracted.dti_ratio || extracted.dti ? `<span class="loan-hero-chip">DTI ${extracted.dti_ratio || (typeof extracted.dti === 'number' && extracted.dti < 2 ? (extracted.dti*100).toFixed(1)+'%' : extracted.dti)}</span>` : ''}
+              ${extracted.interest_rate ? `<span class="loan-hero-chip">${extracted.interest_rate}</span>` : ''}
+              <button class="btn btn-ghost btn-sm" style="background:rgba(255,255,255,.15);color:#fff;padding:4px 10px;font-size:12px;" onclick="App.pages.loanDetail.openEditModal()">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit
               </button>
             </div>
-            <div class="card-body">
-              <div class="info-row"><span class="info-label">Borrower</span><span class="info-value font-semibold">${l.borrower_name}</span></div>
-              ${l.co_borrower_name ? `<div class="info-row"><span class="info-label">Co-Borrower</span><span class="info-value">${l.co_borrower_name}</span></div>` : ''}
-              <div class="info-row"><span class="info-label">Email</span><span class="info-value">${l.borrower_email ? `<a href="mailto:${l.borrower_email}" style="color:var(--primary)">${l.borrower_email}</a>` : '—'}</span></div>
-              <div class="info-row"><span class="info-label">Phone</span><span class="info-value">${l.borrower_phone || '—'}</span></div>
-              <div class="info-row"><span class="info-label">Status</span><span class="info-value">${App.ui.statusBadge(l.status)}</span></div>
-              <div class="info-row"><span class="info-label">Assigned To</span><span class="info-value">${l.assigned_name || '—'}</span></div>
-            </div>
           </div>
-          <div class="card">
-            <div class="card-header"><span class="card-title">Loan Details</span></div>
-            <div class="card-body">
-              <div class="info-row"><span class="info-label">Loan Amount</span><span class="info-value font-semibold">${App.ui.fmt.currency(l.loan_amount)}</span></div>
-              <div class="info-row"><span class="info-label">Loan Type</span><span class="info-value">${l.loan_type || '—'}</span></div>
-              <div class="info-row"><span class="info-label">Purpose</span><span class="info-value">${l.loan_purpose || '—'}</span></div>
-              <div class="info-row"><span class="info-label">Property</span><span class="info-value">${l.property_address || '—'}</span></div>
-              <div class="info-row"><span class="info-label">Property Type</span><span class="info-value">${l.property_type || '—'}</span></div>
-              <div class="info-row"><span class="info-label">Opened</span><span class="info-value">${App.ui.fmt.date(l.created_at)}</span></div>
-            </div>
-          </div>
+          ${completeness !== null ? `
+          <div class="completeness-ring">
+            <svg width="72" height="72" viewBox="0 0 72 72">
+              <circle cx="36" cy="36" r="${r}" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="6"/>
+              <circle cx="36" cy="36" r="${r}" fill="none" stroke="${ringColor}" stroke-width="6"
+                stroke-dasharray="${dash.toFixed(1)} ${circ.toFixed(1)}"
+                stroke-linecap="round" transform="rotate(-90 36 36)"/>
+              <text x="36" y="41" text-anchor="middle" font-size="14" font-weight="700" fill="white">${pct}%</text>
+            </svg>
+            <div class="ring-label" style="color:rgba(255,255,255,.7);">Complete</div>
+          </div>` : ''}
         </div>
+
+        <!-- Extracted data quick stats (if available) -->
+        ${(extracted.gross_monthly_income || extracted.assets_total || extracted.down_payment || extracted.appraised_value) ? `
+        <div class="data-grid-3 detail-full">
+          ${extracted.gross_monthly_income ? `<div class="data-card"><div class="data-card-val">${App.ui.fmt.currency(extracted.gross_monthly_income)}/mo</div><div class="data-card-label">Gross Monthly Income</div></div>` : ''}
+          ${extracted.assets_total ? `<div class="data-card"><div class="data-card-val">${App.ui.fmt.currency(extracted.assets_total)}</div><div class="data-card-label">Total Assets</div></div>` : ''}
+          ${extracted.down_payment ? `<div class="data-card"><div class="data-card-val">${App.ui.fmt.currency(extracted.down_payment)}</div><div class="data-card-label">Down Payment</div></div>` : ''}
+          ${extracted.appraised_value ? `<div class="data-card"><div class="data-card-val">${App.ui.fmt.currency(extracted.appraised_value)}</div><div class="data-card-label">Appraised Value</div></div>` : ''}
+          ${extracted.loan_number ? `<div class="data-card"><div class="data-card-val" style="font-size:13px;">${extracted.loan_number}</div><div class="data-card-label">Loan Number</div></div>` : ''}
+          ${extracted.employer_name || extracted.employer ? `<div class="data-card"><div class="data-card-val" style="font-size:13px;">${extracted.employer_name || extracted.employer}</div><div class="data-card-label">Employer</div></div>` : ''}
+        </div>` : ''}
+
+        <!-- AI Assessment Panel (if last_analyzed_at is set) -->
+        <div id="ai-assessment-panel"></div>
 
         <!-- Notes -->
         ${l.notes ? `<div class="card detail-full" style="border-left:3px solid var(--primary);">
@@ -1563,7 +1662,7 @@ const App = {
         <!-- Tabbed section -->
         <div class="card detail-full">
           <div class="card-header" style="border-bottom:none;padding-bottom:0;">
-            <div class="tabs" style="margin-bottom:0;flex:1;">
+            <div class="tabs" style="margin-bottom:0;flex:1;overflow-x:auto;">
               <button class="tab-btn active" data-tab="documents" onclick="App.pages.loanDetail.switchTab('documents',this)">
                 Documents <span style="background:var(--gray-200);padding:1px 6px;border-radius:999px;font-size:11px;margin-left:4px;">${this._docs.length}</span>
               </button>
@@ -1575,7 +1674,7 @@ const App = {
                 Communications <span style="background:var(--gray-200);padding:1px 6px;border-radius:999px;font-size:11px;margin-left:4px;">${this._emails.length}</span>
               </button>
             </div>
-            <div class="flex gap-2" style="margin-left:auto;flex-shrink:0;">
+            <div class="flex gap-2" style="margin-left:auto;flex-shrink:0;padding-left:8px;">
               <button class="btn btn-secondary btn-sm" onclick="App.pages.loanDetail.openEmail()">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                 Send Email
@@ -1676,32 +1775,51 @@ const App = {
         if (!this._items.length) {
           return '<div class="empty-state"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><h3>No missing items</h3><p>Add items manually or run AI analysis on uploaded documents.</p></div>';
         }
-        const pending  = this._items.filter(i => i.status === 'pending');
-        const received = this._items.filter(i => i.status === 'received');
-        const waived   = this._items.filter(i => i.status === 'waived');
 
-        const renderGroup = (items, title, color) => {
+        const itemRow = (item) => `
+          <li class="checklist-item" style="padding:10px 12px;">
+            <button class="item-status-btn ${item.status !== 'pending' ? item.status : ''}"
+              onclick="App.pages.loanDetail.cycleItemStatus('${item.id}','${item.status}')"
+              title="Click to cycle status: pending → received → waived">
+              ${item.status === 'received' ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>' : item.status === 'waived' ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' : ''}
+            </button>
+            <span class="item-text ${item.status !== 'pending' ? 'done' : ''}" style="flex:1;">${item.item}</span>
+            <span class="item-source" style="margin-right:4px;">${item.source}</span>
+            <button class="btn btn-ghost btn-sm btn-icon" onclick="App.pages.loanDetail.deleteItem('${item.id}')" title="Remove">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </li>`;
+
+        const pending = this._items.filter(i => i.status === 'pending');
+        const done    = this._items.filter(i => i.status !== 'pending');
+
+        // Group pending by priority
+        const critical    = pending.filter(i => i.priority === 'critical');
+        const normal      = pending.filter(i => !i.priority || i.priority === 'normal');
+        const niceToHave  = pending.filter(i => i.priority === 'nice-to-have');
+
+        const group = (items, cls, label, icon) => {
           if (!items.length) return '';
-          return `<p style="font-size:11px;font-weight:600;text-transform:uppercase;color:${color};letter-spacing:.05em;margin:12px 0 6px;">${title}</p>
-          <ul class="checklist">${items.map(item => `
-            <li class="checklist-item">
-              <button class="item-status-btn ${item.status !== 'pending' ? item.status : ''}"
-                onclick="App.pages.loanDetail.cycleItemStatus('${item.id}','${item.status}')"
-                title="Click to change status">
-                ${item.status === 'received' ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>' : item.status === 'waived' ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' : ''}
-              </button>
-              <span class="item-text ${item.status !== 'pending' ? 'done' : ''}">${item.item}</span>
-              <span class="item-source">${item.source}</span>
-              <button class="btn btn-ghost btn-sm btn-icon" onclick="App.pages.loanDetail.deleteItem('${item.id}')" title="Remove">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              </button>
-            </li>`).join('')}
-          </ul>`;
+          return `<div class="priority-group ${cls}">
+            <div class="priority-group-header">${icon} ${label} <span style="margin-left:auto;font-size:12px;font-weight:400;">${items.length} item${items.length !== 1 ? 's' : ''}</span></div>
+            <div class="priority-group-items"><ul class="checklist">${items.map(itemRow).join('')}</ul></div>
+          </div>`;
         };
 
-        return renderGroup(pending, 'Pending', 'var(--danger)') +
-               renderGroup(received, 'Received', 'var(--success)') +
-               renderGroup(waived, 'Waived', 'var(--gray-400)');
+        const doneSection = done.length ? `
+          <div class="priority-group done-group" style="margin-top:8px;">
+            <div class="priority-group-header">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Completed / Waived
+              <span style="margin-left:auto;font-size:12px;font-weight:400;">${done.length}</span>
+            </div>
+            <div class="priority-group-items"><ul class="checklist">${done.map(itemRow).join('')}</ul></div>
+          </div>` : '';
+
+        return group(critical, 'critical', 'Critical', '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>') +
+               group(normal, 'normal', 'Standard', '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>') +
+               group(niceToHave, 'nice', 'Nice to Have', '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>') +
+               doneSection;
       },
 
       renderEmails() {
@@ -2128,7 +2246,7 @@ App.pages.loans.handleMismoFile = async function(file) {
   if (!file) return;
   const resultEl = document.getElementById('mismo-import-result');
   resultEl.classList.remove('hidden');
-  resultEl.innerHTML = `<div style="display:flex;align-items:center;gap:8px;color:var(--primary);"><div class="spinner" style="border-color:rgba(59,130,196,.3);border-top-color:var(--primary);"></div> Parsing MISMO XML and creating loan file…</div>`;
+  resultEl.innerHTML = `<div style="display:flex;align-items:center;gap:8px;color:var(--primary);font-size:13px;"><div class="spinner" style="border-color:rgba(59,130,196,.3);border-top-color:var(--primary);width:16px;height:16px;border-width:2px;"></div> Parsing MISMO XML and creating loan file…</div>`;
 
   const fd = new FormData();
   fd.append('file', file);
@@ -2137,23 +2255,98 @@ App.pages.loans.handleMismoFile = async function(file) {
     if (res?.loan) {
       resultEl.innerHTML = `<div style="background:var(--success-bg);color:var(--success);padding:12px;border-radius:8px;">
         <strong>✓ Loan created successfully!</strong><br>
-        <span style="font-size:12px;">Borrower: ${res.loan.borrower_name} &bull; ${res.parsed_fields} fields extracted</span><br>
-        <button class="btn btn-sm btn-primary" style="margin-top:8px;" onclick="App.ui.hideModal('modal-import-mismo');App.navigate('loan-detail',{id:'${res.loan.id}',borrower:'${res.loan.borrower_name}'})">Open Loan File →</button>
+        <span style="font-size:12px;">Borrower: ${res.loan.borrower_name} &bull; ${res.parsed_fields} fields extracted from MISMO</span>
       </div>`;
-      App.ui.toast('MISMO imported — loan file created!', 'success');
+      App.ui.toast('MISMO imported — navigating to loan file…', 'success', 3000);
       // Refresh loans list in background
-      const data = await App.api.get('/api/loans').catch(() => null);
-      if (data?.loans) { this._loans = data.loans; App.state.loans = data.loans; }
+      App.api.get('/api/loans').then(data => {
+        if (data?.loans) { this._loans = data.loans; App.state.loans = data.loans; }
+      }).catch(() => {});
+      // Auto-navigate to the new loan after a brief moment so user sees the success message
+      setTimeout(() => {
+        App.ui.hideModal('modal-import-mismo');
+        App.navigate('loan-detail', { id: res.loan.id, borrower: res.loan.borrower_name });
+      }, 1200);
     } else {
-      resultEl.innerHTML = `<div style="background:var(--danger-bg);color:var(--danger);padding:12px;border-radius:8px;">✕ ${res?.error || 'Import failed'}</div>`;
+      const isStorageErr = res?.error?.includes('storage') || res?.error?.includes('DOCUMENTS') || res?.error?.includes('KV');
+      resultEl.innerHTML = `<div style="background:var(--danger-bg);color:var(--danger);padding:12px;border-radius:8px;font-size:13px;">
+        <strong>✕ Import failed</strong><br>
+        ${res?.error || 'Unknown error'}
+        ${isStorageErr ? '<br><span style="font-size:11px;opacity:.8;">Storage binding issue — check Cloudflare KV/R2 configuration.</span>' : ''}
+      </div>`;
     }
   } catch (e) {
-    resultEl.innerHTML = `<div style="background:var(--danger-bg);color:var(--danger);padding:12px;border-radius:8px;">✕ Network error during import</div>`;
+    resultEl.innerHTML = `<div style="background:var(--danger-bg);color:var(--danger);padding:12px;border-radius:8px;font-size:13px;">✕ Network error during import. Please try again.</div>`;
   }
+};
+
+// ── AI analysis result renderer (shared by modal + inline panel) ─────────
+App.ui.renderAiAnalysis = function(a, itemsAdded, analyzedAt) {
+  const pct = a.completion_pct ?? 0;
+  const circleClass = pct >= 75 ? 'high' : pct >= 40 ? 'mid' : 'low';
+  const rec = pct >= 75 ? ['ready',  'Ready for Underwriting']
+            : pct >= 40 ? ['needs',  'Needs More Work']
+            :              ['issues', 'Major Issues'];
+  const extracted = (() => {
+    try { return App.state.currentLoan?.extracted_data ? JSON.parse(App.state.currentLoan.extracted_data) : {}; } catch { return {}; }
+  })();
+  const dti  = extracted.dti  ? (typeof extracted.dti  < 2 ? (extracted.dti*100).toFixed(1)+'%'  : extracted.dti+'%')  : (extracted.dti_ratio  || '—');
+  const ltv  = extracted.ltv  ? (typeof extracted.ltv  < 2 ? (extracted.ltv*100).toFixed(1)+'%'  : extracted.ltv+'%')  : '—';
+  const rate = extracted.interest_rate || '—';
+  const income = extracted.gross_monthly_income ? App.ui.fmt.currency(extracted.gross_monthly_income)+'/mo' : '—';
+
+  return `
+    <div class="ai-score-row">
+      <div class="ai-score-circle ${circleClass}">${pct}%</div>
+      <div style="flex:1;">
+        <div class="ai-rec-badge ${rec[0]}">${rec[0]==='ready'?'✓':rec[0]==='needs'?'⚠':'✕'} ${rec[1]}</div>
+        <div style="font-size:13px;font-weight:600;color:var(--gray-800);margin-top:4px;">File Completeness Score</div>
+        ${itemsAdded > 0 ? `<div style="font-size:12px;color:var(--gray-500);">${itemsAdded} new missing item${itemsAdded!==1?'s':''} added to checklist</div>` : ''}
+      </div>
+    </div>
+    ${a.assessment ? `<p class="ai-assessment-text">${a.assessment}</p>` : ''}
+    <div class="ai-calcs">
+      <div class="ai-calc-card"><div class="ai-calc-val">${dti}</div><div class="ai-calc-label">DTI Ratio</div></div>
+      <div class="ai-calc-card"><div class="ai-calc-val">${ltv}</div><div class="ai-calc-label">LTV Ratio</div></div>
+      <div class="ai-calc-card"><div class="ai-calc-val">${rate}</div><div class="ai-calc-label">Interest Rate</div></div>
+      <div class="ai-calc-card"><div class="ai-calc-val">${income}</div><div class="ai-calc-label">Monthly Income</div></div>
+    </div>
+    ${(a.strengths?.length || a.flags?.length) ? `
+    <div class="ai-columns">
+      ${a.strengths?.length ? `<div>
+        <div class="ai-col-title">Strengths</div>
+        ${a.strengths.map(s=>`<div class="ai-strength"><span>✓</span><span>${s}</span></div>`).join('')}
+      </div>` : '<div></div>'}
+      ${a.flags?.length ? `<div>
+        <div class="ai-col-title">Concerns / Flags</div>
+        ${a.flags.map(f=>`<div class="ai-flag"><span>✕</span><span>${f}</span></div>`).join('')}
+      </div>` : '<div></div>'}
+    </div>` : ''}
+    ${a.missing_items?.length ? `
+    <div class="analysis-section">
+      <h4>Missing Items Identified (${a.missing_items.length})</h4>
+      ${a.missing_items.slice(0,15).map(i=>`
+        <div style="display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--gray-100);">
+          <span class="badge badge-${i.priority==='critical'?'red':i.priority==='nice-to-have'?'gray':'yellow'}" style="flex-shrink:0;margin-top:1px;">${i.priority||'normal'}</span>
+          <div><div style="font-size:13px;">${i.item}</div>${i.reason?`<div style="font-size:11px;color:var(--gray-400);margin-top:2px;">${i.reason}</div>`:''}  </div>
+        </div>`).join('')}
+      ${a.missing_items.length > 15 ? `<div style="font-size:12px;color:var(--gray-400);padding:6px 0;">+ ${a.missing_items.length-15} more items added to checklist</div>` : ''}
+    </div>` : ''}
+    <div class="ai-reanalyze">
+      ${analyzedAt ? `<span>Last analyzed: ${App.ui.fmt.dateTime(analyzedAt)}</span>` : ''}
+      <button class="btn btn-secondary btn-sm" onclick="App.pages.loanDetail.runAiAnalysis()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        Re-analyze
+      </button>
+    </div>`;
 };
 
 // ── AI Loan Analysis ─────────────────────────────────────────────────────
 App.pages.loanDetail.runAiAnalysis = async function() {
+  // Show inline panel loading state too
+  const panel = document.getElementById('ai-assessment-panel');
+  if (panel) panel.innerHTML = `<div class="ai-panel"><div class="ai-panel-header"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><h3>AI Assessment</h3></div><div class="ai-panel-body" style="text-align:center;padding:24px;"><div class="spinner-dark"></div><p style="color:var(--gray-500);margin-top:8px;font-size:13px;">Analyzing with Claude AI…</p></div></div>`;
+
   App.ui.showModal('modal-loan-analysis');
   document.getElementById('modal-loan-analysis-body').innerHTML = `
     <div style="text-align:center;padding:20px;">
@@ -2163,42 +2356,43 @@ App.pages.loanDetail.runAiAnalysis = async function() {
   try {
     const res = await App.api.post(`/api/loans/${App.state.currentLoanId}/analyze`);
     if (res?.analysis) {
-      const a = res.analysis;
-      const pct = a.completion_pct ?? '?';
-      const pctColor = pct >= 80 ? 'var(--success)' : pct >= 50 ? 'var(--warning)' : 'var(--danger)';
-      document.getElementById('modal-loan-analysis-body').innerHTML = `
-        <div style="margin-bottom:16px;">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-            <div style="font-size:32px;font-weight:700;color:${pctColor};">${pct}%</div>
-            <div><div style="font-weight:600;">File Completeness</div><div style="font-size:12px;color:var(--gray-500);">${res.items_added} new missing items added to checklist</div></div>
-          </div>
-          <p style="font-size:13px;color:var(--gray-700);background:var(--gray-50);padding:12px;border-radius:8px;">${a.assessment}</p>
+      App.state.currentLoan = this._loan;
+      const html = App.ui.renderAiAnalysis(res.analysis, res.items_added, new Date().toISOString());
+      document.getElementById('modal-loan-analysis-body').innerHTML = html;
+
+      // Also render inline panel
+      if (panel) panel.innerHTML = `<div class="ai-panel detail-full">
+        <div class="ai-panel-header">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <h3>AI Assessment</h3>
+          <span class="ai-ts">Just analyzed</span>
         </div>
-        ${a.missing_items?.length ? `<div class="analysis-section"><h4>Missing Items Identified (${a.missing_items.length})</h4>
-          ${a.missing_items.map(i => `<div style="display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--gray-100);">
-            <span class="badge badge-${i.priority==='critical'?'red':i.priority==='nice-to-have'?'gray':'yellow'}" style="flex-shrink:0;">${i.priority||'normal'}</span>
-            <div><div style="font-size:13px;">${i.item}</div><div style="font-size:11px;color:var(--gray-400);">${i.reason||''}</div></div>
-          </div>`).join('')}
-        </div>` : ''}
-        ${a.strengths?.length ? `<div class="analysis-section" style="margin-top:12px;"><h4>File Strengths</h4>
-          ${a.strengths.map(s => `<div style="font-size:12px;color:var(--success);padding:3px 0;">✓ ${s}</div>`).join('')}
-        </div>` : ''}
-        ${a.flags?.length ? `<div class="analysis-section" style="margin-top:12px;"><h4>Flags</h4>
-          ${a.flags.map(f => `<div class="flag-item">⚠ ${f}</div>`).join('')}
-        </div>` : ''}`;
+        <div class="ai-panel-body">${html}</div>
+      </div>`;
+
       // Refresh missing items list
       const data = await App.api.get(`/api/loans/${App.state.currentLoanId}`).catch(()=>null);
       if (data) {
+        this._loan  = data.loan;
         this._items = data.missing_items || [];
         const itemsEl = document.getElementById('items-list');
         if (itemsEl) itemsEl.innerHTML = this.renderItems();
       }
-      App.ui.toast(`Analysis done — ${res.items_added} items added`, 'success');
+      App.ui.toast(`Analysis complete — ${res.items_added} item${res.items_added!==1?'s':''} added`, 'success');
     } else {
-      document.getElementById('modal-loan-analysis-body').innerHTML = `<p style="color:var(--danger);">${res?.error||'Analysis failed'}</p>`;
+      const isRateLimit = res?.error?.includes('rate') || res?.error?.includes('429') || res?.error?.includes('overloaded');
+      const errHtml = isRateLimit
+        ? `<div class="rate-limit-banner"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div><strong>Claude API is rate limited.</strong> Please wait 30–60 seconds and try again. This is a temporary condition.</div></div>`
+        : `<p style="color:var(--danger);">${res?.error||'Analysis failed'}</p>`;
+      document.getElementById('modal-loan-analysis-body').innerHTML = errHtml;
+      if (panel) panel.innerHTML = '';
     }
   } catch (e) {
-    document.getElementById('modal-loan-analysis-body').innerHTML = `<p style="color:var(--danger);">Analysis request failed. Check API key configuration.</p>`;
+    const errMsg = e.message?.includes('rate') || e.message?.includes('429')
+      ? `<div class="rate-limit-banner"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div><strong>Rate limit reached.</strong> Please wait a moment and retry.</div></div>`
+      : `<p style="color:var(--danger);">Analysis request failed. Check that the ANTHROPIC_API_KEY secret is set in the Cloudflare dashboard.</p>`;
+    document.getElementById('modal-loan-analysis-body').innerHTML = errMsg;
+    if (panel) panel.innerHTML = '';
   }
 };
 
