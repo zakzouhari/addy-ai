@@ -89,8 +89,9 @@ export async function onRequestPost(context) {
 
   // ── EMAIL ──────────────────────────────────────────────────────────────────
   if (channels.includes('email') && loan.borrower_email) {
-    const fromEmail = env.FROM_EMAIL  || 'zzouhari@rmchomemortgage.com';
-    const fromName  = env.SENDER_NAME || 'Zak Zouhari | RMC Home Mortgage';
+    const fromEmail = env.FROM_EMAIL     || 'noreply@rmcclientexperience.com';
+    const fromName  = env.SENDER_NAME   || 'Zak Zouhari | RMC Home Mortgage';
+    const replyTo   = env.REPLY_TO_EMAIL || 'zzouhari@rmchomemortgage.com';
 
     const loanContext = (loan.loan_type || loan.property_address)
       ? `<p style="margin:0 0 20px;color:#64748B;font-size:13px;">${[loan.loan_type, loan.property_address].filter(Boolean).join(' &bull; ')}</p>`
@@ -143,6 +144,7 @@ ${SIGNATURE_TEXT}`;
         api_key:   env.SMTP2GO_API_KEY,
         to:        [loan.borrower_email],
         sender:    `${fromName} <${fromEmail}>`,
+        reply_to:  `Zak Zouhari <${replyTo}>`,
         subject:   `Action Required: Missing Documents for ${loan.borrower_name}`,
         html_body: htmlBody,
         text_body: textBody,

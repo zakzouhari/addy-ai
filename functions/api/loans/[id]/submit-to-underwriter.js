@@ -86,8 +86,9 @@ export async function onRequestPost(context) {
     subjectPrefix = `[UW Submission | Loan #${loanNumber}]`;
   }
 
-  const fromEmail = env.FROM_EMAIL  || 'zzouhari@rmchomemortgage.com';
-  const fromName  = env.SENDER_NAME || 'Zak Zouhari | RMC Home Mortgage';
+  const fromEmail = env.FROM_EMAIL     || 'noreply@rmcclientexperience.com';
+  const fromName  = env.SENDER_NAME   || 'Zak Zouhari | RMC Home Mortgage';
+  const replyTo   = env.REPLY_TO_EMAIL || 'zzouhari@rmchomemortgage.com';
 
   const subject = `${subjectPrefix} ${loan.borrower_name} | ${loan.loan_type || ''} ${loan.loan_purpose || ''}`.trim();
 
@@ -143,6 +144,7 @@ export async function onRequestPost(context) {
       api_key:   env.SMTP2GO_API_KEY,
       to:        [`${toName} <${toEmail}>`],
       sender:    `${fromName} <${fromEmail}>`,
+      reply_to:  `Zak Zouhari <${replyTo}>`,
       subject,
       html_body: htmlBody,
       text_body: `Underwriter Submission — Loan #${loanNumber}\nBorrower: ${loan.borrower_name}\nLoan: ${loan.loan_type} ${loan.loan_purpose}\nProperty: ${loan.property_address}\n\nDocuments (${docManifest.length}): ${docManifest.map(d => d.name).join(', ')}`,

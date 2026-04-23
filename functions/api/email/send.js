@@ -11,8 +11,9 @@ export async function onRequestPost(context) {
     return badRequest('to, subject, and html are required');
   }
 
-  const fromEmail = env.FROM_EMAIL    || 'zzouhari@rmchomemortgage.com';
-  const fromName  = env.SENDER_NAME   || 'Zak Zouhari - RMC Home Mortgage';
+  const fromEmail  = env.FROM_EMAIL     || 'noreply@rmcclientexperience.com';
+  const fromName   = env.SENDER_NAME   || 'Zak Zouhari | RMC Home Mortgage';
+  const replyTo    = env.REPLY_TO_EMAIL || 'zzouhari@rmchomemortgage.com';
   const loanId    = body.loan_id || null;
   const template  = body.template || 'custom';
 
@@ -25,12 +26,10 @@ export async function onRequestPost(context) {
         api_key:    env.SMTP2GO_API_KEY,
         to:         [body.to],
         sender:     `${fromName} <${fromEmail}>`,
+        reply_to:   `Zak Zouhari <${replyTo}>`,
         subject:    body.subject,
         html_body:  body.html,
         text_body:  body.text || stripHtml(body.html),
-        custom_headers: [
-          { header: 'Reply-To', value: fromEmail }
-        ],
       }),
     });
 
